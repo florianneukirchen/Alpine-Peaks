@@ -8,13 +8,17 @@ class User(AbstractUser):
 class Country(models.Model):
     name = models.CharField(max_length=15)
     peaks = models.ManyToManyField("Peak", related_name="countries")
+    slug = models.CharField(max_length=15, blank=True)
 
 class Area(models.Model):
     name = models.CharField(max_length=65)
+    slug = models.CharField(max_length=65, blank=True)
 
 class Peak(models.Model):
     # ID is not auto increment, I want to use OSM IDs
     id = models.IntegerField(primary_key=True)
+
+    slug = models.CharField(max_length=80, blank=True)
 
     name = models.CharField(max_length=80)
     alias = models.CharField(max_length=30, null=True, blank=True)
