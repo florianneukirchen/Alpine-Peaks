@@ -20,6 +20,8 @@ class Peak(models.Model):
 
     slug = models.CharField(max_length=80, blank=True)
 
+    wiki = models.CharField(max_length=80, blank=True)
+
     name = models.CharField(max_length=80)
     alias = models.CharField(max_length=30, null=True, blank=True)
     name_en = models.CharField(max_length=50, null=True, blank=True)
@@ -35,7 +37,7 @@ class Peak(models.Model):
     lat = models.FloatField()
     lon = models.FloatField()
 
-    region = models.ForeignKey("Region", on_delete=models.CASCADE, related_name="peaks", blank=True)
+    region = models.ForeignKey("Region", on_delete=models.CASCADE, related_name="peaks", blank=True, null=True)
 
     prominence = models.IntegerField(null=True, blank=True)
 
