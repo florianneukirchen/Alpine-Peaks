@@ -10,9 +10,15 @@ class Country(models.Model):
     peaks = models.ManyToManyField("Peak", related_name="countries")
     slug = models.CharField(max_length=15, blank=True)
 
+    def __str__(self):
+        return f"{self.name}"
+
 class Region(models.Model):
     name = models.CharField(max_length=65)
     slug = models.CharField(max_length=65, blank=True)
+
+    def __str__(self):
+        return f"{self.id}: {self.name}"
 
 class Peak(models.Model):
     # ID is not auto increment, I want to use OSM IDs
@@ -52,6 +58,8 @@ class Peak(models.Model):
             models.Index(fields=['region']),
         ]
 
+    def __str__(self):
+        return f"{self.id}: {self.name}"
 
 class Tour(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="tours")
@@ -64,3 +72,6 @@ class Tour(models.Model):
     @property
     def likes_count(self):
         return self.likedby.all().count()
+
+    def __str__(self):
+        return f"{self.id}: {self.heading} by {self.user.name}"
