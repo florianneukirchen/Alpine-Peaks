@@ -10,7 +10,7 @@ class Country(models.Model):
     peaks = models.ManyToManyField("Peak", related_name="countries")
     slug = models.CharField(max_length=15, blank=True)
 
-class Area(models.Model):
+class Region(models.Model):
     name = models.CharField(max_length=65)
     slug = models.CharField(max_length=65, blank=True)
 
@@ -35,7 +35,7 @@ class Peak(models.Model):
     lat = models.FloatField()
     lon = models.FloatField()
 
-    area = models.ForeignKey("Area", on_delete=models.CASCADE, related_name="peaks", blank=True)
+    region = models.ForeignKey("Region", on_delete=models.CASCADE, related_name="peaks", blank=True)
 
     prominence = models.IntegerField(null=True, blank=True)
 
@@ -47,7 +47,7 @@ class Peak(models.Model):
     class Meta:
         indexes = [
             models.Index(fields=['name', 'alias', 'name_en', 'name_de', 'name_fr', 'name_it', 'name_sl', 'name_ch', 'name_de_AT', 'name_de_DE', 'alt_name']),
-            models.Index(fields=['area']),
+            models.Index(fields=['region']),
         ]
 
 
