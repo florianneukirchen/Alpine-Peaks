@@ -42,8 +42,8 @@ class Peak(models.Model):
 
     class Meta:
         indexes = [
-            models.Index(fields='name', 'alias', 'name_en', 'name_de', 'name_fr', 'name_it', 'name_sl', 'name_ch', 'name_de_AT', 'name_de_DE', 'alt_name'),
-            models.Index(fields='area'),
+            models.Index(fields=['name', 'alias', 'name_en', 'name_de', 'name_fr', 'name_it', 'name_sl', 'name_ch', 'name_de_AT', 'name_de_DE', 'alt_name']),
+            models.Index(fields=['area']),
         ]
 
 
