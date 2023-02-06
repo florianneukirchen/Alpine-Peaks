@@ -74,4 +74,4 @@ class Tour(models.Model):
         return self.likedby.all().count()
 
     def __str__(self):
-        return f"{self.id}: {self.heading} by {self.user.name}"
+        return f"{self.id}: {self.heading} by {self.user.username}"
