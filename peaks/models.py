@@ -63,6 +63,7 @@ class Peak(models.Model):
 
 class Tour(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="tours")
+    peak = models.ForeignKey("Peak", on_delete=models.CASCADE, related_name="tours", null=True)
     text = models.TextField(blank=True)
     date = models.DateField(blank=True)
     heading = models.CharField(max_length=255, null=True, blank=True)
@@ -74,4 +75,4 @@ class Tour(models.Model):
         return self.likedby.all().count()
 
     def __str__(self):
-        return f"{self.id}: {self.heading} by {self.user.username}"
+        return f"{self.id}: {self.heading} on peak {peak.id} by {self.user.username}"
