@@ -11,7 +11,7 @@
     <div class="card mb-2">
         <div class="card-header">
             <a href="{% url 'peak' peak.slug %}">
-                {{ peak.name }} {% if peak.alias  %} / {{ peak.alias }} {% endif %} {% if peak.alt_name  %} / {{ peak.alt_name }}{% endif %} 
+                {{ peak.name }} {% if peak.alias  %} / {{ peak.alias }} {% endif %} {% if peak.alt_name  %} {{ peak.alt_name }}{% endif %} 
             </a> 
             ({{ peak.ele }} m)
         </div>
@@ -28,7 +28,9 @@
                 {% if peak.name_sl %}SL: {{ peak.name_sl }}{% endif %}
                 
             </div>
+            {% if peak.region  %}
             <div><a href="{% url 'region' peak.region.slug %}">{{ peak.region.name }}</a></div>
+            {% endif %}
             <div>{% for country in peak.countries.all %} <a href="{% url 'region' country.slug %}">{{ country.name }}</a>, {% endfor %}</div>
             
 
