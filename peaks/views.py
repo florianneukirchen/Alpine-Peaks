@@ -32,11 +32,11 @@ def region(request, slug):
     if Region.objects.filter(slug=slug).exists():
         region = Region.objects.get(slug=slug)
         allpeaks = Peak.objects.filter(region=region).order_by("-ele")   
-        title = region.name
+        title = f"Peaks of {region.name}"
     elif Country.objects.filter(slug=slug).exists():
         country = Country.objects.get(slug=slug)
         allpeaks = Peak.objects.filter(countries=country).order_by("-ele") 
-        title = country.name
+        title = f"Peaks of {country.name}"
 
     paginator = Paginator(allpeaks, PEAKSPERPAGE)
     

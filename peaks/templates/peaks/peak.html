@@ -25,10 +25,10 @@
                 
                 </div>
                 <div>
-                    {% for country in peak.countries.all %} {{ country.name }} {% endfor %}
+                    {% for country in peak.countries.all %} <a href="{% url 'region' country.slug %}">{{ country.name }}</a>, {% endfor %}
                 </div>
                 <div>
-                    {% if peak.region %}Region: {{ peak.region.name }}{% endif %}
+                    {% if peak.region %}Region: <a href="{% url 'region' peak.region.slug %}">{{ peak.region.name }}</a>{% endif %}
                 </div>
                 <div>
                     Coordiates: {{ peak.lat }} | {{ peak.lon }}
