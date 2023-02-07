@@ -1,0 +1,24 @@
+{% extends "peaks/layout.html" %}
+
+{% block title %}
+{{ title }} |
+{% endblock %}
+
+{% block body %}
+    <h1>{{ title }}</h1>
+
+    {% for peak in page_obj %}
+    <div class="card mb-2">
+        <div class="card-header">
+            <a href="{% url 'peak' peak.id %}">{{ peak.name }}</a>
+        </div>
+        <div class="card-body">
+            <div>{{ peak.region }}</div>
+            <div>{{ peak.ele }} m</div>
+
+        </div>
+
+    </div>
+    {% endfor %}
+
+{% endblock %}
