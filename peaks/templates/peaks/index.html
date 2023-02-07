@@ -13,8 +13,10 @@
             <a href="{% url 'peak' peak.id %}">{{ peak.name }}</a>
         </div>
         <div class="card-body">
-            <div>{{ peak.region }}</div>
             <div>{{ peak.ele }} m</div>
+            <div>{{ peak.region }}</div>
+            <div>{% for country in peak.countries.all %} {{ country.name }} {% endfor %}</div>
+            
 
         </div>
 
