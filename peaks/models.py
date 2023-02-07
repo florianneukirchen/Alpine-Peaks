@@ -20,6 +20,12 @@ class Region(models.Model):
     def __str__(self):
         return f"{self.id}: {self.name}"
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['slug']),
+        ]
+
+
 class Peak(models.Model):
     # ID is not auto increment, I want to use OSM IDs
     id = models.IntegerField(primary_key=True)
@@ -45,6 +51,7 @@ class Peak(models.Model):
 
     region = models.ForeignKey("Region", on_delete=models.CASCADE, related_name="peaks", blank=True, null=True)
 
+    ele = models.FloatField(null=True)
     prominence = models.IntegerField(null=True, blank=True)
 
     # The output of the nearest greater QGIS Plugin
@@ -56,6 +63,7 @@ class Peak(models.Model):
         indexes = [
             models.Index(fields=['name', 'alias', 'name_en', 'name_de', 'name_fr', 'name_it', 'name_sl', 'name_ch', 'name_de_AT', 'name_de_DE', 'alt_name']),
             models.Index(fields=['region']),
+            models.Index(fields=['slug']),
         ]
 
     def __str__(self):

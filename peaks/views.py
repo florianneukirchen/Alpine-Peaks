@@ -10,6 +10,8 @@ from .models import *
 
 PEAKSPERPAGE = 50
 
+
+
 def index(request):
     allpeaks = Peak.objects.all().order_by("-neargtdist")
     paginator = Paginator(allpeaks, PEAKSPERPAGE)
