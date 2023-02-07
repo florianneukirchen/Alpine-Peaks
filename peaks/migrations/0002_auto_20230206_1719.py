@@ -39,13 +39,13 @@ def load_peak_data(apps, schema_editor):
         else:
             print("\nError: Data file not found. Please download with:")
             print("wget https://www.dropbox.com/s/gk055ofbfswigwj/alps.geojson?dl=0 -O alps.geojson")
-            sys.exit()
+            sys.exit(1)
     
     with open("alps.geojson") as f:
         data = json.load(f)
 
     # Create a set of all regions
-    regions = set([f['properties']['mountain_area'] for f in data['features']])
+    regions = {f['properties']['mountain_area'] for f in data['features']}
     
     # And save regions to DB
     for r in regions:
