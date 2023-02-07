@@ -13,7 +13,7 @@ PEAKSPERPAGE = 50
 
 
 def index(request):
-    allpeaks = Peak.objects.all().order_by("-neargtdist")
+    allpeaks = Peak.objects.all().order_by("-ele")   # ("-neargtdist")
     paginator = Paginator(allpeaks, PEAKSPERPAGE)
     try:
         page_number = int(request.GET.get('page'))

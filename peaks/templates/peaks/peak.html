@@ -26,9 +26,12 @@
                 {% if peak.name_it %}IT: {{ peak.name_it }}{% endif %}
                 {% if peak.name_sl %}SL: {{ peak.name_sl }}{% endif %}
                 
-                                </div>
+                </div>
                 <div>
-                    {% if peak.region %}Region: {{ peak.region }}{% endif %}
+                    {% for country in peak.countries.all %} {{ country.name }} {% endfor %}
+                </div>
+                <div>
+                    {% if peak.region %}Region: {{ peak.region.name }}{% endif %}
                 </div>
                 <div>
                     Coordiates: {{ peak.lat }} | {{ peak.lon }}

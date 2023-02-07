@@ -10,12 +10,11 @@
     {% for peak in page_obj %}
     <div class="card mb-2">
         <div class="card-header">
-            <a href="{% url 'peak' peak.id %}">{{ peak.name }}</a>
+            <a href="{% url 'peak' peak.id %}">{{ peak.name }}</a> ({{ peak.ele }} m)
         </div>
         <div class="card-body">
-            <div>{{ peak.ele }} m</div>
-            <div>{{ peak.region }}</div>
-            <div>{% for country in peak.countries.all %} {{ country.name }} {% endfor %}</div>
+            <div>{{ peak.region.name }}</div>
+            <div>{% for country in peak.countries.all %} {{ country.name }}, {% endfor %}</div>
             
 
         </div>
