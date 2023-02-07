@@ -15,7 +15,7 @@
         <div class="list-group mb-2">
 
             <div class="list-group-item">
-                <strong>{{ peak.ele }} m</strong>
+                <strong>{{ peak.ele|floatformat:0 }} m</strong>
             </div>
 
             {% if peak.name_en or peak.name_de or peak.name_de_DE or peak.name_de_AT or peak.name_ch or peak.name_fr or peak.name_it or peak.name_sl %}

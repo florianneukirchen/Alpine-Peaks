@@ -13,7 +13,7 @@
             <a href="{% url 'peak' peak.slug %}">
                 {{ peak.name }} {% if peak.alias  %} / {{ peak.alias }} {% endif %} {% if peak.alt_name  %} {{ peak.alt_name }}{% endif %} 
             </a> 
-            ({{ peak.ele }} m)
+            ({{ peak.ele|floatformat:0 }} m)
         </div>
         <div class="card-body">
             <div>
