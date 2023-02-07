@@ -8,14 +8,14 @@ class User(AbstractUser):
 class Country(models.Model):
     name = models.CharField(max_length=15)
     peaks = models.ManyToManyField("Peak", related_name="countries")
-    slug = models.CharField(max_length=15, blank=True)
+    slug = models.SlugField(max_length=15, blank=True)
 
     def __str__(self):
         return f"{self.name}"
 
 class Region(models.Model):
     name = models.CharField(max_length=65)
-    slug = models.CharField(max_length=65, blank=True)
+    slug = models.SlugField(max_length=65, blank=True)
 
     def __str__(self):
         return f"{self.id}: {self.name}"
@@ -30,7 +30,7 @@ class Peak(models.Model):
     # ID is not auto increment, I want to use OSM IDs
     id = models.IntegerField(primary_key=True)
 
-    slug = models.CharField(max_length=80, blank=True)
+    slug = models.SlugField(max_length=80, blank=True)
 
     wiki = models.CharField(max_length=80, blank=True)
 
