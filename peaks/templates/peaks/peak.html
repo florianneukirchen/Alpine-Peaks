@@ -5,25 +5,28 @@
 {% endblock %}
 
 {% block body %}
-<h1>{{ peak.name }}</h1>
+<h1>{{ peak.name }} {% if peak.alias  %} / {{ peak.alias }} {% endif %} {% if peak.alt_name  %} / {{ peak.alt_name }}{% endif %} </h1>
+<h5>{{ peak.ele }} m</h5>
 
 <div class="row">
     <div class="col-sm-12 col-md-6 col-lg-6">
+
+        
+
+                {% if peak.name_en %}<div>EN: {{ peak.name_en }}</div>{% endif %}
+                {% if peak.name_de %}<div>DE: {{ peak.name_de }}</div>{% endif %}
+                {% if peak.name_de_DE %}<div>DE: {{ peak.name_de_DE }}</div>{% endif %}
+                {% if peak.name_de_AT %}<div>AT: {{ peak.name_de_AT }}</div>{% endif %}
+                {% if peak.name_ch %}<div>CH: {{ peak.name_ch }}</div>{% endif %}
+                {% if peak.name_fr %}<div>FR: {{ peak.name_fr }}</div>{% endif %}
+                {% if peak.name_it %}<div>IT: {{ peak.name_it }}</div>{% endif %}
+                {% if peak.name_sl %}<div>SL: {{ peak.name_sl }}</div>{% endif %}
+
+
+
         <div class="card mb-3">
             <div class="card-body">
 
-                <div>
-                {% if peak.alias or peak.alt_name %}Alias: {{ peak.alias }} {{ peak.alt_name }}{% endif %}
-                {% if peak.name_en %}EN: {{ peak.name_en }}{% endif %}
-                {% if peak.name_de %}DE: {{ peak.name_de }}{% endif %}
-                {% if peak.name_de_DE %}DE: {{ peak.name_de_DE }}{% endif %}
-                {% if peak.name_de_AT %}AT: {{ peak.name_de_AT }}{% endif %}
-                {% if peak.name_ch %}CH: {{ peak.name_ch }}{% endif %}
-                {% if peak.name_fr %}FR: {{ peak.name_fr }}{% endif %}
-                {% if peak.name_it %}IT: {{ peak.name_it }}{% endif %}
-                {% if peak.name_sl %}SL: {{ peak.name_sl }}{% endif %}
-                
-                </div>
                 <div>
                     {% for country in peak.countries.all %} <a href="{% url 'region' country.slug %}">{{ country.name }}</a>, {% endfor %}
                 </div>

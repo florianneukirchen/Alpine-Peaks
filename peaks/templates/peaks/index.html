@@ -10,9 +10,24 @@
     {% for peak in page_obj %}
     <div class="card mb-2">
         <div class="card-header">
-            <a href="{% url 'peak' peak.slug %}">{{ peak.name }}</a> ({{ peak.ele }} m)
+            <a href="{% url 'peak' peak.slug %}">
+                {{ peak.name }} {% if peak.alias  %} / {{ peak.alias }} {% endif %} {% if peak.alt_name  %} / {{ peak.alt_name }}{% endif %} 
+            </a> 
+            ({{ peak.ele }} m)
         </div>
         <div class="card-body">
+            <div>
+                
+                {% if peak.name_en %}EN: {{ peak.name_en }}{% endif %}
+                {% if peak.name_de %}DE: {{ peak.name_de }}{% endif %}
+                {% if peak.name_de_DE %}DE: {{ peak.name_de_DE }}{% endif %}
+                {% if peak.name_de_AT %}AT: {{ peak.name_de_AT }}{% endif %}
+                {% if peak.name_ch %}CH: {{ peak.name_ch }}{% endif %}
+                {% if peak.name_fr %}FR: {{ peak.name_fr }}{% endif %}
+                {% if peak.name_it %}IT: {{ peak.name_it }}{% endif %}
+                {% if peak.name_sl %}SL: {{ peak.name_sl }}{% endif %}
+                
+            </div>
             <div><a href="{% url 'region' peak.region.slug %}">{{ peak.region.name }}</a></div>
             <div>{% for country in peak.countries.all %} <a href="{% url 'region' country.slug %}">{{ country.name }}</a>, {% endfor %}</div>
             
