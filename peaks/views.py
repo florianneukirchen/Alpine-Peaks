@@ -26,9 +26,9 @@ def index(request):
         "title": "Peaks of the Alps"})
 
 
-def peak(request, id):
+def peak(request, slug):
     try:
-        peak = Peak.objects.get(id=id)
+        peak = Peak.objects.get(slug=slug)
     except Peak.DoesNotExist:
         raise Http404("Page not found")
 

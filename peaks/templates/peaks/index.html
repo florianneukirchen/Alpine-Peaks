@@ -10,7 +10,7 @@
     {% for peak in page_obj %}
     <div class="card mb-2">
         <div class="card-header">
-            <a href="{% url 'peak' peak.id %}">{{ peak.name }}</a> ({{ peak.ele }} m)
+            <a href="{% url 'peak' peak.slug %}">{{ peak.name }}</a> ({{ peak.ele }} m)
         </div>
         <div class="card-body">
             <div>{{ peak.slug }}</div>
