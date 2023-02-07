@@ -13,9 +13,6 @@
             <div class="card-body">
 
                 <div>
-                    Slug {{ peak.slug }}
-                </div>
-                <div>
                 {% if peak.alias or peak.alt_name %}Alias: {{ peak.alias }} {{ peak.alt_name }}{% endif %}
                 {% if peak.name_en %}EN: {{ peak.name_en }}{% endif %}
                 {% if peak.name_de %}DE: {{ peak.name_de }}{% endif %}
@@ -42,10 +39,6 @@
                     {% if peak.neargtdelta %}{{ peak.neargtdelta }}{% endif %}
                     {% if peak.neargtdist %}{{ peak.neargtdist }}{% endif %}
                 </div>
-                
-
-
-                
 
             </div>
 

@@ -21,6 +21,8 @@ The data was downloaded in [QGIS](https://www.qgis.org/) using the [QuickOSM](ht
 
 ## Files
 
+
+
 ### peaks/migrations/0002_auto .... .py
 This file is the [data migration](https://docs.djangoproject.com/en/4.1/howto/writing-migrations/) to load the peaks data into the database. It will fail if the file alps.geojson does not exist, you have to download the file first with:
 
