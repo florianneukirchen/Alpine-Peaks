@@ -66,7 +66,7 @@
             <div class="list-group-item">
                 <a href="{% url 'peak' peak.neargt.slug %}">{{ lowpeak.name }}</a> ({{ lowpeak.ele }} m)
                 <div class="text-muted mt-2">
-                    <small>Distance {{ lowpeak.neargtdist|floatformat:2 }} km, Δ<i>h</i> {{ peak.lowpeak }} m</small>
+                    <small>Distance {{ lowpeak.neargtdist|floatformat:2 }} km, Δ<i>h</i> {{ lowpeak.neargtdelta }} m</small>
                 </div>
             </div>
             {% endfor %}
