@@ -32,7 +32,7 @@ def index(request):
             Peak.objects.filter(alt_name__icontains=query) |
             Peak.objects.filter(region__name__icontains=query)
             ).order_by("-ele")
-        title = f"Search {query}"
+        title = f"Search: {query}"
     else:
         allpeaks = Peak.objects.all().order_by("-ele")   
         title = "Peaks of the Alps"
@@ -74,7 +74,14 @@ def region(request, slug):
         "page_obj": page_obj,
         "title": title})
 
+def regionlist(request):
+    regions = Region.objects.all().order_by("name")
+    countries = Country.objects.all().order_by("name")
 
+    return render(request, "peaks/regions.html", {
+        "regions": regions,
+        "countries": countries,
+    })
 
 
 def peak(request, slug):
