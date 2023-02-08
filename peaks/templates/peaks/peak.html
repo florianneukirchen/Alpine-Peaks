@@ -64,7 +64,7 @@
             </div>
             {% for lowpeak in peak.nearestlower.all %}
             <div class="list-group-item">
-                <a href="{% url 'peak' peak.neargt.slug %}">{{ lowpeak.name }}</a> ({{ lowpeak.ele }} m)
+                <a href="{% url 'peak' lowpeak.slug %}">{{ lowpeak.name }}</a> ({{ lowpeak.ele }} m)
                 <div class="text-muted mt-2">
                     <small>Distance {{ lowpeak.neargtdist|floatformat:2 }} km, Δ<i>h</i> {{ lowpeak.neargtdelta }} m</small>
                 </div>
@@ -79,8 +79,7 @@
         <div id="map" data-lat="{{ peak.lat }}" data-lon="{{ peak.lon }}" data-region="{{ peak.region.slug }}">
         </div>
 
-        <div>
-            Here goes Wikipedia
+        <div id="wiki">
         </div>
     </div>
 </div>
