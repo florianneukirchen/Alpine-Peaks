@@ -13,7 +13,30 @@ PEAKSPERPAGE = 50
 
 
 def index(request):
-    allpeaks = Peak.objects.all().order_by("-ele")   
+    # Search
+    if request.GET.get('q'):
+        query = request.GET.get('q')
+        # Chain queries with "or" 
+        # case insensitive contains: __icontains 
+        allpeaks = (
+            Peak.objects.filter(name__icontains=query) |
+            Peak.objects.filter(alias__icontains=query) |
+            Peak.objects.filter(name_en__icontains=query) |
+            Peak.objects.filter(name_de__icontains=query) |
+            Peak.objects.filter(name_fr__icontains=query) |
+            Peak.objects.filter(name_it__icontains=query) |
+            Peak.objects.filter(name_sl__icontains=query) |
+            Peak.objects.filter(name_ch__icontains=query) |
+            Peak.objects.filter(name_de_AT__icontains=query) |
+            Peak.objects.filter(name_de_DE__icontains=query) |
+            Peak.objects.filter(alt_name__icontains=query) |
+            Peak.objects.filter(region__name__icontains=query)
+            ).order_by("-ele")
+        title = f"Search {query}"
+    else:
+        allpeaks = Peak.objects.all().order_by("-ele")   
+        title = "Peaks of the Alps"
+
     paginator = Paginator(allpeaks, PEAKSPERPAGE)
     
     try:
@@ -25,7 +48,7 @@ def index(request):
     page_obj = paginator.get_page(page_number)
     return render(request, "peaks/index.html", {
         "page_obj": page_obj,
-        "title": "Peaks of the Alps"})
+        "title": title})
 
 
 def region(request, slug):
