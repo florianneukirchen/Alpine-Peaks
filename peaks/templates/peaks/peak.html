@@ -45,6 +45,8 @@
             </div>
         </div>
 
+        <!-- Mont Blanc has neargt Mont Blanc -->
+        {% if peak.neargt.id != peak.id %}  
         <div class="list-group mb-2">
             <div class="list-group-item list-group-item-secondary">
                 Nearest higher peak 
@@ -56,6 +58,8 @@
                 </div>
             </div>
         </div>
+        {% endif %}
+        
 
         {% if peak.nearestlower.first %}
         <div class="list-group mb-2">
@@ -63,12 +67,14 @@
                 Related lower peaks 
             </div>
             {% for lowpeak in peak.nearestlower.all %}
+            {% if lowpeak.id != peak.id %}
             <div class="list-group-item">
                 <a href="{% url 'peak' lowpeak.slug %}">{{ lowpeak.name }}</a> ({{ lowpeak.ele }} m)
                 <div class="text-muted mt-2">
                     <small>Distance {{ lowpeak.neargtdist|floatformat:2 }} km, Δ<i>h</i> {{ lowpeak.neargtdelta }} m</small>
                 </div>
             </div>
+            {% endif %}
             {% endfor %}
 
         </div>
