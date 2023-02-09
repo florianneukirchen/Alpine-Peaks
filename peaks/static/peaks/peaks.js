@@ -30,8 +30,8 @@ $(document).ready(function(){
     // get wikimedia data if wiki div exists
     if ($("#wiki").length) {
         // Hide the divs as long as we dont have content
-        $('#wiki').hide();
         $('#wikiimgcontainer').hide();
+        $('#wiki').hide();
 
         // First search for matching articles
         const title = document.getElementById('wiki').dataset.title;
