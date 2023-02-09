@@ -82,7 +82,7 @@ $(document).ready(function(){
                             $('#wiki').show();
                             if (data.query.pages[pageid].hasOwnProperty('thumbnail')) {
                                 const thumbnail = data.query.pages[pageid].thumbnail
-                                var s = `<img src="${thumbnail.source}" width="${thumbnail.width}" height="${thumbnail.height} alt="${title}"\>`
+                                var s = `<img src="${thumbnail.source}" width="${thumbnail.width}" height="${thumbnail.height} alt="${title}" class="maxwidth"\>`
                                 $("#wikiimg").html(s); 
 
                                 $('#wikiimgcontainer').show();
