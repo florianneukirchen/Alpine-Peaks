@@ -69,6 +69,20 @@ class Peak(models.Model):
     def __str__(self):
         return f"{self.id}: {self.name}"
 
+    def geojson(self):
+        return {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [self.lon, self.lat]
+            },
+            "properties": {
+                "name": self.name,
+                "slug": self.slug
+            }
+        }
+
+
 class Tour(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="tours")
     peak = models.ForeignKey("Peak", on_delete=models.CASCADE, related_name="tours", null=True)

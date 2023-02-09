@@ -74,6 +74,14 @@ def region(request, slug):
         "page_obj": page_obj,
         "title": title})
 
+
+def regionapi(request, slug):
+    try:
+        region = Region.objects.get(slug=slug)
+    except Region.DoesNotExist:
+        raise Http404("Page not found")
+    return JsonResponse([peak.geojson() for peak in region.peaks.all()], safe=False)
+
 def regionlist(request):
     regions = Region.objects.all().order_by("name")
     countries = Country.objects.all().order_by("name")
