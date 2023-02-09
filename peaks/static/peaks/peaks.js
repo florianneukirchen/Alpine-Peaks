@@ -5,14 +5,14 @@ $(document).ready(function(){
         const lat = parseFloat(mapdiv.dataset.lat);
         const lon = parseFloat(mapdiv.dataset.lon);
 
-        var map = L.map('map').setView([lat, lon], 13);
+        var map = L.map('map').setView([lat, lon], 12);
 
         var osmlayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
+        });
 
-        var terrainlayer = new L.StamenTileLayer("terrain");
+        var terrainlayer = new L.StamenTileLayer("terrain").addTo(map);
         map.addLayer(terrainlayer);
 
         var baseMaps = {
