@@ -81,6 +81,8 @@ $(document).ready(function(){
                                 const thumbnail = data.query.pages[pageid].thumbnail
                                 var s = `<img src="${thumbnail.source}" width="${thumbnail.width}" height="${thumbnail.height} alt="${title}"\>`
                                 $("#wikiimg").html(s); 
+
+                                $('#wikiimgcontainer').show();
                                 // Query for image credits
                                 const pageimg = data.query.pages[pageid].pageimage
                                 wikiapi = `https://en.wikipedia.org/w/api.php?action=query&prop=imageinfo&iiprop=extmetadata&titles=File:${pageimg}&format=json`;
@@ -98,10 +100,18 @@ $(document).ready(function(){
                                         // I need to get the pageid that is a key in the JSON object
                                         const pgid = Object.keys(data.query.pages)[0];
                                         const metadata = data.query.pages[pgid].imageinfo[0].extmetadata;
-                                        s = `<small><i>© <a href="https://commons.wikimedia.org/wiki/File:${pageimg}">${metadata.Artist.value} / Wikimedia</a></i>, <a href="${metadata.LicenseUrl.value}">${metadata.LicenseShortName.value}</a></small>`;
+                                        // Strip html from artists (like lists and links)
+                                        const artists = metadata.Artist.value.replace(/<[^>]+>/g, '');
+                                        // License: Public domain does not have license url
+                                        var license = "";
+                                        if ("LicenseUrl" in metadata) {
+                                            license = `<a href="${metadata.LicenseUrl.value}">${metadata.LicenseShortName.value}</a>`;
+                                        } else {
+                                            license = metadata.LicenseShortName.value;
+                                        }
+                                        
+                                        s = `<small><i>© <a href="https://commons.wikimedia.org/wiki/File:${pageimg}">${artists} / Wikimedia</a></i>, ${license}</small>`;
                                         $("#wikiimgcred").html(s);
-                                        $('#wikiimgcontainer').show();
-
                                     }
                                 });
                             }
