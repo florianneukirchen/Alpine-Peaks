@@ -79,7 +79,13 @@
         <div id="map" data-lat="{{ peak.lat }}" data-lon="{{ peak.lon }}" data-region="{{ peak.region.slug }}">
         </div>
 
-        <div id="wiki">
+        <div id="wiki" data-title="{{ peak.name }}" class="list-group mb-2 mt-2">
+            <div id="wikilink" class="list-group-item list-group-item-secondary"></div>
+            <div class="list-group-item">
+                <div id="wikiimg"></div>
+                <div id="wikiimgcred"></div>
+            </div>
+            <div id="wikiextract" class="list-group-item"></div>
         </div>
     </div>
 </div>
