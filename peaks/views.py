@@ -80,7 +80,7 @@ def regionapi(request, slug):
         region = Region.objects.get(slug=slug)
     except Region.DoesNotExist:
         raise Http404("Page not found")
-    return JsonResponse([peak.geojson() for peak in region.peaks.all()], safe=False)
+    return JsonResponse([peak.geojson() for peak in region.peaks.all().order_by("-ele")], safe=False)
 
 def regionlist(request):
     regions = Region.objects.all().order_by("name")
