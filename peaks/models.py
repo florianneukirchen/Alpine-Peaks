@@ -78,7 +78,8 @@ class Peak(models.Model):
             },
             "properties": {
                 "name": self.name,
-                "slug": self.slug
+                "slug": self.slug,
+                "ele": self.ele
             }
         }
 
