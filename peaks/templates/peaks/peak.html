@@ -48,7 +48,7 @@
         <!-- Mont Blanc has neargt Mont Blanc -->
         {% if peak.neargt.id != peak.id %}  
         <div class="list-group mb-2">
-            <div class="list-group-item list-group-item-secondary">
+            <div class="list-group-item list-group-item-dark">
                 Nearest higher peak 
             </div>
             <div class="list-group-item">
@@ -63,7 +63,7 @@
 
         {% if peak.nearestlower.first %}
         <div class="list-group mb-2">
-            <div class="list-group-item list-group-item-secondary">
+            <div class="list-group-item list-group-item-dark">
                 Related lower peaks 
             </div>
             {% for lowpeak in peak.nearestlower.all %}
@@ -86,7 +86,7 @@
         </div>
 
         <div id="wiki" data-title="{{ peak.name }}" class="list-group mb-2 mt-2">
-            <div id="wikilink" class="list-group-item list-group-item-secondary"></div>
+            <div id="wikilink" class="list-group-item list-group-item-dark"></div>
             <div class="list-group-item text-center" id="wikiimgcontainer">
                 <div id="wikiimg"></div>
                 <div id="wikiimgcred"></div>
