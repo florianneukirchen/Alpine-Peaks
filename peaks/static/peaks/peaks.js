@@ -33,8 +33,14 @@ $(document).ready(function(){
         $('#wikiimgcontainer').hide();
         $('#wiki').hide();
 
+        // Search for title, but make "Mont Blanc - Monte Bianco" etc. work
+        var title = document.getElementById('wiki').dataset.title;
+        if (title.includes("-")){
+            title = title.split("-")[0];
+            title = title.trim();
+        }
+
         // First search for matching articles
-        const title = document.getElementById('wiki').dataset.title;
         var wikiapi = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${title}&namespace=0&limit=1&format=json`;
         // Does not work with $.get because of Cross-Origin Resource Sharing
         $.ajax({

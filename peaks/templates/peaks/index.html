@@ -11,7 +11,7 @@
     <div class="card mb-2">
         <div class="card-header">
             <a href="{% url 'peak' peak.slug %}">
-                {{ peak.name }} {% if peak.alias  %} / {{ peak.alias }} {% endif %} {% if peak.alt_name  %} {{ peak.alt_name }}{% endif %} 
+                {{ peak.name }} {% if peak.alias  %} / {{ peak.alias }} {% endif %} {% if peak.alt_name  %} / {{ peak.alt_name }}{% endif %} 
             </a> 
             ({{ peak.ele|floatformat:0 }} m)
         </div>
