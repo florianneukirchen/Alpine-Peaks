@@ -34,7 +34,7 @@ def index(request):
             ).order_by("-ele")
         title = f"Search: {query}"
     else:
-        allpeaks = Peak.objects.all().order_by("-ele")   
+        allpeaks = Peak.objects.all().order_by("ele")   
         title = "Peaks of the Alps"
 
     paginator = Paginator(allpeaks, PEAKSPERPAGE)

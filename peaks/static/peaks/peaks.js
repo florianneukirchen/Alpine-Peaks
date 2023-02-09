@@ -29,6 +29,10 @@ $(document).ready(function(){
 
     // get wikimedia data if wiki div exists
     if ($("#wiki").length) {
+        // Hide the divs as long as we dont have content
+        $('#wiki').hide();
+        $('#wikiimgcontainer').hide();
+
         // First search for matching articles
         const title = document.getElementById('wiki').dataset.title;
         var wikiapi = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${title}&namespace=0&limit=1&format=json`;
@@ -66,6 +70,7 @@ $(document).ready(function(){
                             $("#wikiextract").text(shortenString(data.query.pages[pageid].extract));
                             $("#wikiextract").append(`<div><a href="https://en.wikipedia.org/wiki/${data.query.pages[pageid].title}">Wikipedia</a></div>`)
                             $("#wikilink").html(`<a href="https://en.wikipedia.org/wiki/${data.query.pages[pageid].title}">${title} on Wikipedia</a>`);
+                            $('#wiki').show();
                             if (data.query.pages[pageid].hasOwnProperty('thumbnail')) {
                                 const thumbnail = data.query.pages[pageid].thumbnail
                                 var s = `<img src="${thumbnail.source}" width="${thumbnail.width}" height="${thumbnail.height} alt="${title}"\>`
@@ -89,6 +94,7 @@ $(document).ready(function(){
                                         const metadata = data.query.pages[pgid].imageinfo[0].extmetadata;
                                         s = `<small><i>© <a href="https://commons.wikimedia.org/wiki/File:${pageimg}">${metadata.Artist.value} / Wikimedia</a></i>, <a href="${metadata.LicenseUrl.value}">${metadata.LicenseShortName.value}</a></small>`;
                                         $("#wikiimgcred").html(s);
+                                        $('#wikiimgcontainer').show();
 
                                     }
                                 });
