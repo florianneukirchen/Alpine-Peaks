@@ -5,7 +5,7 @@ $(document).ready(function(){
         const lat = parseFloat(mapdiv.dataset.lat);
         const lon = parseFloat(mapdiv.dataset.lon);
 
-        var map = L.map('map').setView([lat, lon], 12);
+        var map = L.map('map').setView([lat, lon], 11);
 
         var osmlayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
