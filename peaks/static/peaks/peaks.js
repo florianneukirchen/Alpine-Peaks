@@ -33,12 +33,15 @@ $(document).ready(function(){
         $('#wikiimgcontainer').hide();
         $('#wiki').hide();
 
-        // Search for title, but make "Mont Blanc - Monte Bianco" etc. work
+        // Search for title, but make "Mont Blanc - Monte Bianco", "Mont Dolent / Monte Dolent" etc. work
         var title = document.getElementById('wiki').dataset.title;
         if (title.includes("-")){
             title = title.split("-")[0];
-            title = title.trim();
+            
+        } else if (title.includes("/")){
+            title = title.split("/")[0];
         }
+        title = title.trim();
 
         // First search for matching articles
         var wikiapi = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${title}&namespace=0&limit=1&format=json`;
