@@ -127,8 +127,13 @@ def load_peak_data(apps, schema_editor):
             peak = Peak.objects.get(id=id)
             peak.neargt = Peak.objects.get(id=neargtname)
             peak.save()
+        
+    # Mont Blanc: set neargtdist manually
+    peak = Peak.objects.get(id=281399025)
+    peak.neargtdist = 2812 # From Wikipedia
+    peak.save()
 
-    # Add slug, starting with prominent peaks
+    # Add slug, sorted by ele
     print("Add slug...")
     for peak in Peak.objects.all().order_by("-ele"):
         i = 1
