@@ -4,6 +4,7 @@ $(document).ready(function(){
         const mapdiv = document.getElementById('map');
         const lat = parseFloat(mapdiv.dataset.lat);
         const lon = parseFloat(mapdiv.dataset.lon);
+        const region = mapdiv.dataset.region;
 
         var map = L.map('map').setView([lat, lon], 11);
 
@@ -25,6 +26,14 @@ $(document).ready(function(){
         var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
 
         var marker = L.marker([lat, lon]).addTo(map);
+
+        // Add regional peaks
+        $.get(`/regionapi/${region}`, function(data, status){
+            
+            var gjsonlayer = L.geoJSON(data, {
+                onEachFeature: onEachFeature
+            }).addTo(map);
+        });
     }
 
     // get wikimedia data if wiki div exists
@@ -140,4 +149,31 @@ function shortenString(str) {
     }
 
     return shorter;
+}
+
+
+function onEachFeature(feature, layer) {
+    const mountainIcon = L.icon({
+        iconUrl: '/static/peaks/mountain.svg',
+        iconSize:     [20, 20], 
+        iconAnchor:   [10, 10], 
+    });
+
+    const mountainIconSmall = L.icon({
+        iconUrl: '/static/peaks/mountain.svg',
+        iconSize:     [15, 15], 
+        iconAnchor:   [7, 7], 
+    });
+
+    layer.bindTooltip(feature.properties.name);
+    if (feature.properties.neargtdist >= 1) {
+        layer.setIcon(mountainIcon);
+    } else {
+        layer.setIcon(mountainIconSmall);
+    }
+
+    layer.on('click', function(e) {
+        window.location.href = `/peak/${e.target.feature.properties.slug}`;
+    })
+    
 }

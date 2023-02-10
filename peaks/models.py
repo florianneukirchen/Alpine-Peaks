@@ -79,7 +79,8 @@ class Peak(models.Model):
             "properties": {
                 "name": self.name,
                 "slug": self.slug,
-                "ele": self.ele
+                "ele": self.ele,
+                "neargtdist": self.neargtdist,
             }
         }
 
@@ -98,4 +99,4 @@ class Tour(models.Model):
         return self.likedby.all().count()
 
     def __str__(self):
-        return f"{self.id}: {self.heading} on peak {peak.id} by {self.user.username}"
+        return f"{self.id}: {self.heading} on peak {self.peak.id} by {self.user.username}"
