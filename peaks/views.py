@@ -7,12 +7,18 @@ from django.urls import reverse
 import json
 
 from .models import *
+from .forms import *
 
 PEAKSPERPAGE = 50
 
 
 
 def index(request):
+    # Order by
+    order = '-ele'
+    if request.GET.get('order') and request.GET.get('order') in ['neargtdist', '-neargtdist', 'name', '-name', 'ele', '-ele']:
+        order = request.GET.get('order')
+
     # Search
     if request.GET.get('q'):
         query = request.GET.get('q')
@@ -31,10 +37,10 @@ def index(request):
             Peak.objects.filter(name_de_DE__icontains=query) |
             Peak.objects.filter(alt_name__icontains=query) |
             Peak.objects.filter(region__name__icontains=query)
-            ).order_by("-ele")
+            ).order_by(order)
         title = f"Search: {query}"
     else:
-        allpeaks = Peak.objects.all().order_by("-ele")   
+        allpeaks = Peak.objects.all().order_by(order)   
         title = "Peaks of the Alps"
 
     paginator = Paginator(allpeaks, PEAKSPERPAGE)
@@ -48,17 +54,24 @@ def index(request):
     page_obj = paginator.get_page(page_number)
     return render(request, "peaks/index.html", {
         "page_obj": page_obj,
-        "title": title})
+        "title": title,
+        "selectorder" : OrderSelect(initial={'order': order})
+        })
 
 
 def region(request, slug):
+    # Order by
+    order = '-ele'
+    if request.GET.get('order') and request.GET.get('order') in ['neargtdist', '-neargtdist', 'name', '-name', 'ele', '-ele']:
+        order = request.GET.get('order')
+
     if Region.objects.filter(slug=slug).exists():
         region = Region.objects.get(slug=slug)
-        allpeaks = Peak.objects.filter(region=region).order_by("-ele")   
+        allpeaks = Peak.objects.filter(region=region).order_by(order)   
         title = f"Peaks of {region.name}"
     elif Country.objects.filter(slug=slug).exists():
         country = Country.objects.get(slug=slug)
-        allpeaks = Peak.objects.filter(countries=country).order_by("-ele") 
+        allpeaks = Peak.objects.filter(countries=country).order_by(order) 
         title = f"Peaks of {country.name}"
 
     paginator = Paginator(allpeaks, PEAKSPERPAGE)
@@ -72,7 +85,9 @@ def region(request, slug):
     page_obj = paginator.get_page(page_number)
     return render(request, "peaks/index.html", {
         "page_obj": page_obj,
-        "title": title})
+        "title": title,
+        "selectorder" : OrderSelect(initial={'order': order}),
+        })
 
 
 def regionapi(request, slug):

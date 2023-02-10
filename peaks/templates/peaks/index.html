@@ -6,6 +6,13 @@
 
 {% block body %}
     <h1>{{ title }}</h1>
+    <div>
+        {% if selectorder %}
+        <form method = "GET">
+            {{ selectorder }}
+        </form>
+        {% endif %}
+    </div>
 
     {% for peak in page_obj %}
     <div class="card mb-2">

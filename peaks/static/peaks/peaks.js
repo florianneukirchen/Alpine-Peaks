@@ -1,4 +1,9 @@
 $(document).ready(function(){
+    // Select order
+    $("#id_order").change(function(){
+        this.form.submit();
+    })
+
     // load map if map div exists
     if ($("#map").length) {
         const mapdiv = document.getElementById('map');
