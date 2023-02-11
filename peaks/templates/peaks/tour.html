@@ -1,0 +1,18 @@
+{% extends "peaks/layout.html" %}
+
+{% block title %}
+{{ title }} |
+{% endblock %}
+
+{% block body %}
+<h1>{{ title }}</h1>
+
+<form action="{% url 'tour' %}" method="post"> 
+    {% csrf_token %}
+    {{ tourform.as_div }}
+    <input type="hidden" id="peakid" name="peakid" value="{{ peakid }}">
+    <input type="submit" value="Submit" class="btn btn-primary mt-3">
+
+</form>
+
+{% endblock %}

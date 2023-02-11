@@ -13,7 +13,9 @@
 
 
         <div class="list-group mb-2">
-
+            <div class="list-group-item list-group-item-dark">
+                Details
+            </div>
             <div class="list-group-item">
                 <strong>{{ peak.ele|floatformat:0 }} m</strong>
             </div>
@@ -79,6 +81,28 @@
 
         </div>
         {% endif %}
+
+        <div class="list-group mb-2">
+            <div class="list-group-item list-group-item-dark">
+                Tours 
+                {% if user.is_authenticated %}
+                <input type="button" class="flright btn btn-sm btn-outline-primary" value="New" onclick="location.href='/tour/?new={{ peak.id }}'"/>
+                {% endif %}
+            </div>
+            {% for tour in peak.tours.all %}
+
+            <div class="list-group-item">
+                <a href="{% url 'showtour' tour.id %}">{{ tour.heading }}</a> ({{ tour.date }})
+                <div class="text-muted mt-2">
+                    Posted by {{ tour.user }}  on {{ tour.timestamp }}
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
     </div>
 
     <div class="col-sm-12 col-md-6 col-lg-6">

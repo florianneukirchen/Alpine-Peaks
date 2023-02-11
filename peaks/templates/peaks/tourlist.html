@@ -1,0 +1,25 @@
+{% extends "peaks/layout.html" %}
+
+{% block title %}
+Latest tours |
+{% endblock %}
+
+{% block body %}
+<h1>Latest tours</h1>
+
+
+
+
+        <div class="list-group mb-2">
+            {% for tour in tours.all %}
+            <div class="list-group-item">
+                <div><a href="{% url 'showtour' tour.id %}">{{ tour.heading }}</a> on {{ tour.date }}</div>
+                <div>{{ tour.peak.name }} ({{ tour.peak.ele }} m) </div> 
+                <div class="text-muted mt-2">
+                    Posted by {{ tour.user }}  on {{ tour.timestamp }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+{% endblock %}

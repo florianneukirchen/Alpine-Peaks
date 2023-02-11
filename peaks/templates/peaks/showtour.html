@@ -1,0 +1,47 @@
+{% extends "peaks/layout.html" %}
+
+{% block title %}
+{{ tour.heading }} |
+{% endblock %}
+
+{% block body %}
+<h1>{{ tour.heading }}</h1>
+
+
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-6">
+
+
+        <div class="list-group mb-2">
+            <div class="list-group-item list-group-item-dark">
+                <a href="{% url 'peak' tour.peak.slug %}">{{ tour.peak.name }} </a>({{ tour.peak.ele|floatformat:0 }} m)
+            </div>
+            <div class="list-group-item">
+                Date: {{ tour.date }}
+            </div>
+            <div class="list-group-item">
+                {{ tour.text }}
+            </div>
+            <div class="list-group-item">
+                Posted by {{ tour.user }} on {{ tour.timestamp }}
+            </div>
+        </div>
+
+        {% if user == tour.user  %}
+        <div>
+            <input type="button" class="btn btn-primary" value="Edit" onclick="location.href='/tour/?edit={{ tour.id }}'"/>
+        </div>
+        {% endif %}
+
+    </div>
+
+
+    <div class="col-sm-12 col-md-6 col-lg-6">
+        <div id="map" data-lat="{{ tour.peak.lat }}" data-lon="{{ tour.peak.lon }}" data-region="{{ tour.peak.region.slug }}">
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}

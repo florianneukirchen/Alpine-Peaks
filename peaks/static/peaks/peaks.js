@@ -33,7 +33,7 @@ $(document).ready(function(){
         var marker = L.marker([lat, lon]).addTo(map);
 
         // Add regional peaks
-        $.get(`/regionapi/${region}`, function(data, status){
+        $.get(`/json/${region}`, function(data, status){
             
             var gjsonlayer = L.geoJSON(data, {
                 onEachFeature: onEachFeature
