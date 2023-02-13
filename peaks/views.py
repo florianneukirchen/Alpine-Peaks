@@ -71,7 +71,8 @@ def index(request, slug=None):
     else:
         allpeaks = Peak.objects.all().order_by(order)   
         title = "Peaks of the Alps"
-        
+
+    # Pagination    
     paginator = Paginator(allpeaks, PEAKSPERPAGE)
     
     try:
@@ -81,6 +82,7 @@ def index(request, slug=None):
         page_number = 1
     
     page_obj = paginator.get_page(page_number)
+    
     return render(request, "peaks/index.html", {
         "page_obj": page_obj,
         "title": title,
