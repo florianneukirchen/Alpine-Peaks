@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_page
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
@@ -76,7 +77,7 @@ def index(request, slug=None):
         })
 
 
-
+@cache_page(None)
 def jsonapi(request, slug=None):
     if slug:
         try:

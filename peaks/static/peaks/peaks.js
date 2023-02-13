@@ -52,7 +52,6 @@ $(document).ready(function(){
             var toppeakleayer = L.geoJSON(filtered, {
                 onEachFeature: onEachFeature2
             }).addTo(map);
-            toppeakleayer.bringToBack();
         });
 
     }
