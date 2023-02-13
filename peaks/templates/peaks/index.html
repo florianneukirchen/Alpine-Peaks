@@ -6,60 +6,70 @@
 
 {% block body %}
     <h1>{{ title }}</h1>
-    <div>
-        {% if selectorder %}
-        <form method = "GET">
-            {{ selectorder }}
-        </form>
-        {% endif %}
-    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-6">
 
-    {% for peak in page_obj %}
-    <div class="card mb-2">
-        <div class="card-header">
-            <a href="{% url 'peak' peak.slug %}">
-                {{ peak.name }} {% if peak.alias  %} / {{ peak.alias }} {% endif %} {% if peak.alt_name  %} / {{ peak.alt_name }}{% endif %} 
-            </a> 
-            ({{ peak.ele|floatformat:0 }} m)
-        </div>
-        <div class="card-body">
             <div>
-                
-                {% if peak.name_en %}EN: {{ peak.name_en }}{% endif %}
-                {% if peak.name_de %}DE: {{ peak.name_de }}{% endif %}
-                {% if peak.name_de_DE %}DE: {{ peak.name_de_DE }}{% endif %}
-                {% if peak.name_de_AT %}AT: {{ peak.name_de_AT }}{% endif %}
-                {% if peak.name_ch %}CH: {{ peak.name_ch }}{% endif %}
-                {% if peak.name_fr %}FR: {{ peak.name_fr }}{% endif %}
-                {% if peak.name_it %}IT: {{ peak.name_it }}{% endif %}
-                {% if peak.name_sl %}SL: {{ peak.name_sl }}{% endif %}
-                
+                {% if selectorder %}
+                <form method = "GET">
+                    {{ selectorder }}
+                </form>
+                {% endif %}
             </div>
-            {% if peak.region  %}
-            <div><a href="{% url 'region' peak.region.slug %}">{{ peak.region.name }}</a></div>
-            {% endif %}
-            <div>{% for country in peak.countries.all %} <a href="{% url 'region' country.slug %}">{{ country.name }}</a>, {% endfor %}</div>
+
+            {% for peak in page_obj %}
+            <div class="card mb-2">
+                <div class="card-header">
+                    <a href="{% url 'peak' peak.slug %}">
+                        {{ peak.name }} {% if peak.alias  %} / {{ peak.alias }} {% endif %} {% if peak.alt_name  %} / {{ peak.alt_name }}{% endif %} 
+                    </a> 
+                    ({{ peak.ele|floatformat:0 }} m)
+                </div>
+                <div class="card-body">
+                    <div>
+                        
+                        {% if peak.name_en %}EN: {{ peak.name_en }}{% endif %}
+                        {% if peak.name_de %}DE: {{ peak.name_de }}{% endif %}
+                        {% if peak.name_de_DE %}DE: {{ peak.name_de_DE }}{% endif %}
+                        {% if peak.name_de_AT %}AT: {{ peak.name_de_AT }}{% endif %}
+                        {% if peak.name_ch %}CH: {{ peak.name_ch }}{% endif %}
+                        {% if peak.name_fr %}FR: {{ peak.name_fr }}{% endif %}
+                        {% if peak.name_it %}IT: {{ peak.name_it }}{% endif %}
+                        {% if peak.name_sl %}SL: {{ peak.name_sl }}{% endif %}
+                        
+                    </div>
+                    {% if peak.region  %}
+                    <div><a href="{% url 'region' peak.region.slug %}">{{ peak.region.name }}</a></div>
+                    {% endif %}
+                    <div>{% for country in peak.countries.all %} <a href="{% url 'region' country.slug %}">{{ country.name }}</a>, {% endfor %}</div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                {% if page_obj.has_previous %}  
+                <li class="page-item"><a class="page-link" href="?page=1">&laquo; First</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                {% endif %}
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                    </span>
+                </li>
+                {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
+                {% endif %}
+                </ul>
+            </nav>
         </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <div id="map" data-lat="{{ lat }}" data-lon="{{ lon }}" data-region="{{ regionslug }}" data-mode="{{ mapmode }}">
+            </div>
+        </div>
+    
     </div>
-    {% endfor %}
-
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-          {% if page_obj.has_previous %}  
-          <li class="page-item"><a class="page-link" href="?page=1">&laquo; First</a></li>
-          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
-          {% endif %}
-          <li class="page-item active" aria-current="page">
-            <span class="page-link">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-            </span>
-          </li>
-          {% if page_obj.has_next %}
-          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
-          <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
-          {% endif %}
-        </ul>
-    </nav>
-
 
 {% endblock %}

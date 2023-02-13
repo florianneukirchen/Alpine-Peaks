@@ -10,8 +10,16 @@ $(document).ready(function(){
         const lat = parseFloat(mapdiv.dataset.lat);
         const lon = parseFloat(mapdiv.dataset.lon);
         const region = mapdiv.dataset.region;
+        const mode = mapdiv.dataset.mode;
+        var zoom = 6;
 
-        var map = L.map('map').setView([lat, lon], 11);
+        if (mode === "peak"){
+            zoom = 11
+        } else if (mode === "region") {
+            zoom = 8
+        } 
+
+        var map = L.map('map').setView([lat, lon], zoom);
 
         var osmlayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -30,15 +38,21 @@ $(document).ready(function(){
 
         var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
 
-        var marker = L.marker([lat, lon]).addTo(map);
+        // Marker of peak
+        if (mode === "peak"){
+            var marker = L.marker([lat, lon]).addTo(map);
+        }
+        
 
         // Add regional peaks
-        $.get(`/json/${region}`, function(data, status){
-            
-            var gjsonlayer = L.geoJSON(data, {
-                onEachFeature: onEachFeature
-            }).addTo(map);
-        });
+        if (region != "None") {
+            $.get(`/json/${region}`, function(data, status){
+                
+                var gjsonlayer = L.geoJSON(data, {
+                    onEachFeature: onEachFeature
+                }).addTo(map);
+            });
+        } 
 
         // Top peaks of the Alps
         console.log("Fetch top peaks")
