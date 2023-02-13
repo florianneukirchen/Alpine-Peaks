@@ -16,7 +16,7 @@ PEAKSPERPAGE = 50
 
 
 
-def index(request):
+def index(request, slug=None):
     # Order by
     order = '-ele'
     if request.GET.get('order') and request.GET.get('order') in ['neargtdist', '-neargtdist', 'name', '-name', 'ele', '-ele']:
@@ -42,6 +42,19 @@ def index(request):
             Peak.objects.filter(region__name__icontains=query)
             ).order_by(order)
         title = f"Search: {query}"
+    
+    # Region / Country
+    elif slug:
+        if Region.objects.filter(slug=slug).exists():
+            region = Region.objects.get(slug=slug)
+            allpeaks = Peak.objects.filter(region=region).order_by(order)   
+            title = f"Peaks of {region.name}"
+        elif Country.objects.filter(slug=slug).exists():
+            country = Country.objects.get(slug=slug)
+            allpeaks = Peak.objects.filter(countries=country).order_by(order) 
+            title = f"Peaks of {country.name}"
+
+    # Index (all peaks)
     else:
         allpeaks = Peak.objects.all().order_by(order)   
         title = "Peaks of the Alps"
@@ -61,36 +74,6 @@ def index(request):
         "selectorder" : OrderSelect(initial={'order': order})
         })
 
-
-def region(request, slug):
-    # Order by
-    order = '-ele'
-    if request.GET.get('order') and request.GET.get('order') in ['neargtdist', '-neargtdist', 'name', '-name', 'ele', '-ele']:
-        order = request.GET.get('order')
-
-    if Region.objects.filter(slug=slug).exists():
-        region = Region.objects.get(slug=slug)
-        allpeaks = Peak.objects.filter(region=region).order_by(order)   
-        title = f"Peaks of {region.name}"
-    elif Country.objects.filter(slug=slug).exists():
-        country = Country.objects.get(slug=slug)
-        allpeaks = Peak.objects.filter(countries=country).order_by(order) 
-        title = f"Peaks of {country.name}"
-
-    paginator = Paginator(allpeaks, PEAKSPERPAGE)
-    
-    try:
-        page_number = int(request.GET.get('page'))
-    except TypeError:
-        # GET request without ?page=int
-        page_number = 1
-    
-    page_obj = paginator.get_page(page_number)
-    return render(request, "peaks/index.html", {
-        "page_obj": page_obj,
-        "title": title,
-        "selectorder" : OrderSelect(initial={'order': order}),
-        })
 
 
 def jsonapi(request, slug=None):

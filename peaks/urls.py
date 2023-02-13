@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
     path("", views.index, name="index"),
     path("peak/<slug:slug>", views.peak, name="peak"),
-    path("region/<slug:slug>", views.region, name="region"),
+    path("region/<slug:slug>", views.index, name="region"),
     path("json/<slug:slug>", views.jsonapi, name="jsonapi"),
     path("json/", views.jsonapi, name="jsonapi"),
     path("region/", views.regionlist, name="regionlist"),
