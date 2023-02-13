@@ -88,10 +88,10 @@ class Peak(models.Model):
 
 class Tour(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="tours")
-    peak = models.ForeignKey("Peak", on_delete=models.CASCADE, related_name="tours", null=True)
-    text = models.TextField(blank=True)
-    date = models.DateField(blank=True)
-    heading = models.CharField(max_length=255, null=True, blank=True)
+    peak = models.ForeignKey("Peak", on_delete=models.CASCADE, related_name="tours")
+    text = models.TextField()
+    date = models.DateField()
+    heading = models.CharField(max_length=255)
     timestamp = models.DateTimeField(auto_now_add=True)
     likedby = models.ManyToManyField("User", related_name="liked_tours", blank=True, default="")
 
