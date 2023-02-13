@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
+from django.db.models import OuterRef, Subquery
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.urls import reverse
@@ -84,7 +85,12 @@ def jsonapi(request, slug=None):
             raise Http404("Page not found")
         allpeaks = region.peaks.all().order_by("-ele")
     else:
-        allpeaks = Peak.objects.all().order_by("-ele")
+        # Use subquery to get n peaks with greatest neargtdist per region
+        # Note: this is slow and should be cached
+        n = 3
+        top_peaks = Peak.objects.filter(region=OuterRef('region')).order_by('-neargtdist')[:n]
+        allpeaks = Peak.objects.filter(id__in=Subquery(top_peaks.values('id')))
+
     return JsonResponse([peak.geojson() for peak in allpeaks], safe=False)
 
 

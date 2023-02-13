@@ -1,4 +1,58 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg height="15" viewBox="0 0 15 15" width="15" xmlns="http://www.w3.org/2000/svg" id="mountain">
-  <path d="m7.5 1c-.3 0-.4.2-.6.4l-5.8 9.5c-.1.1-.1.3-.1.4 0 .5.4.7.7.7h11.6c.4 0 .7-.2.7-.7 0-.2 0-.2-.1-.4l-5.7-9.5c-.2-.2-.4-.4-.7-.4zm0 1.5 3.3 5.5h-.8l-1.5-1.5-1 1.5-1-1.5-1.5 1.5h-.9z"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="15"
+   viewBox="0 0 15 15"
+   width="15"
+   id="mountain"
+   version="1.1"
+   sodipodi:docname="mountain.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs7" />
+  <sodipodi:namedview
+     id="namedview5"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="37.2"
+     inkscape:cx="1.3037634"
+     inkscape:cy="7.5"
+     inkscape:window-width="1920"
+     inkscape:window-height="1052"
+     inkscape:window-x="1366"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="mountain" />
+  <g
+     id="g974">
+    <path
+       sodipodi:type="star"
+       style="fill:#ffffff;stroke:none;stroke-width:1.7;stroke-linejoin:bevel"
+       id="path31"
+       inkscape:flatsided="true"
+       sodipodi:sides="3"
+       sodipodi:cx="7.3669662"
+       sodipodi:cy="5.6616006"
+       sodipodi:r1="3.8584695"
+       sodipodi:r2="1.9292347"
+       sodipodi:arg1="1.3528507"
+       sodipodi:arg2="2.4000483"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="M 8.2012611,9.428793 3.6873345,4.5005249 10.212303,3.0554838 Z"
+       inkscape:transform-center-x="-0.010504333"
+       inkscape:transform-center-y="-1.2197732"
+       transform="matrix(0.82739923,-0.94349295,0.91140894,0.85652588,-3.7219211,8.706676)" />
+    <path
+       d="m7.5 1c-.3 0-.4.2-.6.4l-5.8 9.5c-.1.1-.1.3-.1.4 0 .5.4.7.7.7h11.6c.4 0 .7-.2.7-.7 0-.2 0-.2-.1-.4l-5.7-9.5c-.2-.2-.4-.4-.7-.4zm0 1.5 3.3 5.5h-.8l-1.5-1.5-1 1.5-1-1.5-1.5 1.5h-.9z"
+       id="path2" />
+  </g>
 </svg>

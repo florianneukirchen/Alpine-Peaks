@@ -39,6 +39,22 @@ $(document).ready(function(){
                 onEachFeature: onEachFeature
             }).addTo(map);
         });
+
+        // Top peaks of the Alps
+        console.log("Fetch top peaks")
+        $.get("/json/", function(data, status){
+            console.log("Got top peaks")
+
+            const filtered = data.filter(function(jsonObject){
+                return jsonObject.properties.region != region;
+            });
+
+            var toppeakleayer = L.geoJSON(filtered, {
+                onEachFeature: onEachFeature2
+            }).addTo(map);
+            toppeakleayer.bringToBack();
+        });
+
     }
 
     // get wikimedia data if wiki div exists
@@ -177,6 +193,23 @@ function onEachFeature(feature, layer) {
         layer.setIcon(mountainIconSmall);
     }
 
+    layer.on('click', function(e) {
+        window.location.href = `/peak/${e.target.feature.properties.slug}`;
+    })
+    
+}
+
+function onEachFeature2(feature, layer) {
+
+    const mountainIconGrey = L.icon({
+        iconUrl: '/static/peaks/mountain-grey.svg',
+        iconSize:     [15, 15], 
+        iconAnchor:   [7, 7], 
+    });
+
+    layer.bindTooltip(feature.properties.name);
+    layer.setIcon(mountainIconGrey);
+  
     layer.on('click', function(e) {
         window.location.href = `/peak/${e.target.feature.properties.slug}`;
     })

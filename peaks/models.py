@@ -81,6 +81,7 @@ class Peak(models.Model):
                 "slug": self.slug,
                 "ele": self.ele,
                 "neargtdist": self.neargtdist,
+                "region": self.region.slug
             }
         }
 
