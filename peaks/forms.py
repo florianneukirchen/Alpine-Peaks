@@ -21,18 +21,22 @@ class WaypointForm(forms.ModelForm):
         model = Waypoint
         fields = ['number', 'name', 'lat', 'lon']
         widgets = {
-          #  'number': forms.HiddenInput(),
-            'number': forms.NumberInput(),
+           'number': forms.HiddenInput(),
+           # 'number': forms.NumberInput(),
             'lat': forms.HiddenInput(),
             'lon': forms.HiddenInput(),
+        }
+        labels = {
+            'name': ''
         }
 
     # Add Bootstraps CSS classes
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['number'].disabled = True
-        for field in self.fields.values():
-            field.widget.attrs['class'] = 'form-control'
+        self.fields['name'].widget.attrs['class'] = 'form-control'
+        self.fields['name'].widget.attrs['placeholder'] = 'Name'
+
             
 
 

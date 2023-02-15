@@ -204,7 +204,8 @@ def tour(request):
             raise Http404("Page not found")
         return render(request, "peaks/tour.html",{
             "tourform": TourForm(initial={'peak': peakid}),
-            "title": f"New tour on {peak.name}"
+            "title": f"New tour on {peak.name}",
+            "peak": peak,
         })
 
     elif request.GET.get('edit'):
@@ -220,7 +221,8 @@ def tour(request):
 
         return render(request, "peaks/tour.html",{
              "tourform": TourForm(instance=tour),
-             "title": f"Edit tour on {tour.peak.name} ({tour.date})"
+             "title": f"Edit tour on {tour.peak.name} ({tour.date})",
+             "peak": tour.peak,
         })
 
     else:

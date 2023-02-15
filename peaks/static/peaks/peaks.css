@@ -15,3 +15,7 @@ img.maxwidth {
 .flright {
     float: right;
 }
+
+.flleft {
+    float: left;
+}
