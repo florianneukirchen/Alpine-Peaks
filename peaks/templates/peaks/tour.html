@@ -9,9 +9,15 @@
 
 <form action="{% url 'tour' %}" method="post"> 
     {% csrf_token %}
+    {{ tourform.waypoints.management_form }}
     {{ tourform.as_div }}
     <input type="hidden" id="peakid" name="peakid" value="{{ peakid }}">
+    <div>Waypoints:</div>
+    {% for form in tourform.waypoints %}
+    {{ form.as_div }}
+    {% endfor %}
     <input type="submit" value="Submit" class="btn btn-primary mt-3">
+
 
 </form>
 

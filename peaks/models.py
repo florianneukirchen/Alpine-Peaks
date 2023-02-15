@@ -104,3 +104,13 @@ class Tour(models.Model):
 
     def __str__(self):
         return f"{self.id}: {self.heading} on peak {self.peak.id} by {self.user.username}"
+
+class Waypoint(models.Model):
+    tour = models.ForeignKey("Tour", on_delete=models.CASCADE, related_name="waypoints")
+    number = models.IntegerField()
+    name = models.CharField(max_length=255)
+    lat = models.FloatField()
+    lon = models.FloatField()
+
+    def __str__(self):
+        return f"Waypoint {self.number} on {self.tour.heading}"
