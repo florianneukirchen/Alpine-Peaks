@@ -17,6 +17,9 @@
         {% for tour in page_obj %}
 
         <div class="list-group-item">
+            {% if user == tour.user %} 
+            <input type="button" class="flright btn btn-sm btn-outline-primary" value="Edit" onclick="location.href='/tour/?edit={{ tour.id }}'"/>
+            {% endif %}
             <div><a href="{% url 'showtour' tour.id %}">{{ tour.heading }}</a> on {{ tour.date }}</div>
             <div>{{ tour.peak.name }} ({{ tour.peak.ele }} m) </div> 
             <div class="text-muted mt-2">

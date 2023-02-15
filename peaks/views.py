@@ -212,6 +212,12 @@ def tour(request):
             tour = Tour.objects.get(id=int(request.GET.get('edit')))
         except (Tour.DoesNotExist, ValueError):
             raise Http404("Page not found")
+
+                
+        if tour.user != request.user:
+            return HttpResponse(status=400)
+
+
         return render(request, "peaks/tour.html",{
              "tourform": TourForm(instance=tour),
              "title": f"Edit tour on {tour.peak.name} ({tour.date})"

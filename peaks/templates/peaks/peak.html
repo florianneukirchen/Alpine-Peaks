@@ -92,6 +92,9 @@
             {% for tour in peak.tours.all %}
 
             <div class="list-group-item">
+                {% if user == tour.user %} 
+                <input type="button" class="flright btn btn-sm btn-outline-primary" value="Edit" onclick="location.href='/tour/?edit={{ tour.id }}'"/>
+                {% endif %}
                 <a href="{% url 'showtour' tour.id %}">{{ tour.heading }}</a> ({{ tour.date }})
                 <div class="text-muted mt-2">
                     Posted by {{ tour.user }}  on {{ tour.timestamp }}
