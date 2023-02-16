@@ -15,6 +15,8 @@ class OrderSelect(forms.Form):
 
     order = forms.ChoiceField(label="", choices=CHOICES, widget=forms.Select(attrs={'class':'form-select form-select-sm mb-3'}))
 
+# https://stackoverflow.com/questions/501719/dynamically-adding-a-form-to-a-django-formset
+# https://simpleit.rocks/python/django/dynamic-add-form-with-add-button-in-django-modelformset-template/
 
 class WaypointForm(forms.ModelForm):
     class Meta:

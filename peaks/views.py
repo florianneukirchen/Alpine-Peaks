@@ -221,7 +221,7 @@ def tour(request):
 
         return render(request, "peaks/tour.html",{
              "tourform": TourForm(instance=tour),
-             "title": f"Edit tour on {tour.peak.name} ({tour.date})",
+             "title": f"Edit tour on {tour.peak.name}",
              "peak": tour.peak,
         })
 

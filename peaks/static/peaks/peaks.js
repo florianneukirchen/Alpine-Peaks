@@ -54,7 +54,7 @@ $(document).ready(function(){
             });
         } 
 
-            // Top peaks of the Alps
+        // Top peaks of the Alps
         if (!(mode === "edittour")){
             console.log("Fetch top peaks")
             $.get("/json/", function(data, status){
@@ -68,6 +68,11 @@ $(document).ready(function(){
                     onEachFeature: onEachFeature2
                 }).addTo(map);
             });
+        }
+
+        // Tour edit: listen to map click events
+        if (mode === "edittour"){
+            map.on('click', addWaypoint);
         }
 
     }
@@ -228,5 +233,40 @@ function onEachFeature2(feature, layer) {
     layer.on('click', function(e) {
         window.location.href = `/peak/${e.target.feature.properties.slug}`;
     })
+    
+}
+
+function addWaypoint(e) {
+    console.log(e.latlng)
+    const lat = e.latlng.lat;
+    const lon = e.latlng.lng;
+    // Clone the last (still empty) waypoint
+    var oldElement = $('.wp:last')
+    var newElement = oldElement.clone(true);
+
+    // Set lat lon
+    oldElement.find('.latlon').html('<small>' + lat.toFixed(4) + ', ' + lon.toFixed(4) + '</small>')
+    oldElement.find("input[name*='lat']").val(lat)
+    oldElement.find("input[name*='lon']").val(lon)
+
+    // Update index numbers of new element
+    var total = $('#id_form-TOTAL_FORMS').val();
+    console.log(total)
+    newElement.find(':input').each(function() {
+        var name = $(this).attr('name').replace('-' + (total-1) + '-','-' + total + '-');
+        var id = 'id_' + name;
+        $(this).attr({'name': name, 'id': id}).val('');
+    });
+    
+    // Update management form and wp number
+    total++;
+    $('#id_form-TOTAL_FORMS').val(total);
+    newElement.find('.wpnumber').text(`${total}`);
+
+    // Insert new form
+    oldElement.after(newElement);
+
+
+
     
 }

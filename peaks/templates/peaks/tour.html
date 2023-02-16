@@ -24,18 +24,39 @@
             {{ tourform.waypoints.management_form }}
             {{ tourform.as_div }}
             <input type="hidden" id="peakid" name="peakid" value="{{ peakid }}">
-            <div class="form-group">
+
                 <label>Waypoints:</label>
-                <div class="form-row">
-                    {{ tourform.waypoints.as_div }}
-                </div>
-                <div class="flright">1</div>
-            </div>
-            <input type="submit" value="Submit" class="btn btn-primary mt-3">
+
+                {% for waypoint in tourform.waypoints %}
+                {{ waypoint.non_field_errors }}
+                {{ waypoint.errors }}
+                {% endfor %}
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Nr.</td>
+                            <td>Name</td>
+                            <td>Lat, Lon</td>
+                        </tr>
+                    </thead>
+                    <tbody>            
+                {% for waypoint in tourform.waypoints %}
+                        <tr class="wp">
+                            <td class="wpnumber">1</td>
+                            <td>{{ waypoint.name }}{{ waypoint.lat }}{{ waypoint.lon }}</td>
+                            <td class="latlon">Click on map</td>
+                         </tr>
+                {% endfor %}
+                    </tbody>
+                </table>
+
+                              
+            <input type="submit" value="Submit" class="btn btn-primary mt-3 mb-3">
+            <input type="button" class="btn btn-outline-secondary mt-3 mb-3" value="Cancel" onclick="location.href='{% url 'peak' peak.slug %}'"/>
         </form>
     </div>
     <div class="col-sm-12 col-md-6 col-lg-6">
-        <div id="map" data-lat="{{ peak.lat }}" data-lon="{{ peak.lon }}" data-region="{{ peak.region.slug }}" data-mode="peak">
+        <div id="map" data-lat="{{ peak.lat }}" data-lon="{{ peak.lon }}" data-region="{{ peak.region.slug }}" data-mode="edittour">
         </div>
     </div>
 </div>
