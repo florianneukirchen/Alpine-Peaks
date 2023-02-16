@@ -11,10 +11,10 @@ $(document).ready(function(){
         const lon = parseFloat(mapdiv.dataset.lon);
         const region = mapdiv.dataset.region;
         const mode = mapdiv.dataset.mode;
-        var zoom = 6;
+        var zoom = 11;
 
-        if (mode === "peak"){
-            zoom = 11
+        if (mode === "alps"){
+            zoom = 6
         } else if (mode === "region") {
             zoom = 8
         } 
@@ -39,13 +39,13 @@ $(document).ready(function(){
         var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
 
         // Marker of peak
-        if (mode === "peak"){
+        if (mode === "peak" | mode === "edittour" | mode == "tour"){
             var marker = L.marker([lat, lon]).addTo(map);
         }
         
 
         // Add regional peaks
-        if (region != "None") {
+        if (!(region == "None" || mode === "edittour")) {
             $.get(`/json/${region}`, function(data, status){
                 
                 var gjsonlayer = L.geoJSON(data, {
@@ -54,19 +54,21 @@ $(document).ready(function(){
             });
         } 
 
-        // Top peaks of the Alps
-        console.log("Fetch top peaks")
-        $.get("/json/", function(data, status){
-            console.log("Got top peaks")
+            // Top peaks of the Alps
+        if (!(mode === "edittour")){
+            console.log("Fetch top peaks")
+            $.get("/json/", function(data, status){
+                console.log("Got top peaks")
 
-            const filtered = data.filter(function(jsonObject){
-                return jsonObject.properties.region != region;
+                const filtered = data.filter(function(jsonObject){
+                    return jsonObject.properties.region != region;
+                });
+
+                var toppeakleayer = L.geoJSON(filtered, {
+                    onEachFeature: onEachFeature2
+                }).addTo(map);
             });
-
-            var toppeakleayer = L.geoJSON(filtered, {
-                onEachFeature: onEachFeature2
-            }).addTo(map);
-        });
+        }
 
     }
 
