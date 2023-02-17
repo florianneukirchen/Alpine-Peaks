@@ -165,9 +165,9 @@ def profile(request, username):
 @login_required
 def tour(request):
     if request.method == "POST":
+        print(request.POST)
         form = TourForm(request.POST)
         waypointformset = WaypointFormset(request.POST)
-        print(waypointformset)
 
         if form.is_valid():
             # Get instance of tour without commiting to DB
@@ -197,7 +197,7 @@ def tour(request):
             tour.save()
 
             # Waypoints
-            if waypointformset.cleaned_data is not None:
+            if waypointformset.is_valid():
                 for wp in waypointformset.cleaned_data:
                     print(wp)
 
@@ -209,6 +209,7 @@ def tour(request):
                         # Ignore invalid data and empty forms
                         pass
                     else:
+                        print(lat, lon)
                         if len(oldwaypoints) > 0:
                             waypoint = oldwaypoints.pop()
                         else:
