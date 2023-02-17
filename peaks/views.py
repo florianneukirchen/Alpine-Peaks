@@ -180,7 +180,7 @@ def tour(request, id=None):
             # New
             form = TourForm(request.POST)
         waypointformset = WaypointFormset(request.POST)
-
+        
         if form.is_valid():
             # Get instance of tour without commiting to DB
             tour = form.save(commit=False)
@@ -209,6 +209,11 @@ def tour(request, id=None):
             tour.save()
 
             # Waypoints
+            print(waypointformset)
+            print('valid', waypointformset.is_valid())
+            print(waypointformset.non_form_errors())
+            print(waypointformset.errors)
+
             if waypointformset.is_valid():
                 for wp in waypointformset.cleaned_data:
                     print(wp)
