@@ -114,3 +114,16 @@ class Waypoint(models.Model):
 
     def __str__(self):
         return f"<WP {self.number}> {self.name} ({self.tour.heading})"
+
+    def geojson(self):
+        return {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [self.lon, self.lat]
+            },
+            "properties": {
+                "name": self.name,
+                "number": self.number,
+            }
+        }

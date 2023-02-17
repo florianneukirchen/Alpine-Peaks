@@ -16,4 +16,5 @@ urlpatterns = [
     path("tour/", views.showtour, name="tourlist"),
     path("edit/<int:id>", views.tour, name="edittour"),
     path("edit/", views.tour, name="newtour"),
+    path("waypoints/<int:id>", views.waypoints, name="waypoints"),
 ]

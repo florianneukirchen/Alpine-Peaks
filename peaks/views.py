@@ -294,6 +294,16 @@ def showtour(request, id=None):
             "tours": tours,
         })
 
+def waypoints(request, id):
+    """Return waypoints als GeoJSON"""
+    try:
+        tour = Tour.objects.get(id=id)
+    except Tour.DoesNotExist:
+        raise Http404("Page not found")
+    waypoints = tour.waypoints.all().order_by("number")
+
+    return JsonResponse([wp.geojson() for wp in waypoints], safe=False)
+
 
 def login_view(request):
     if request.method == "POST":
