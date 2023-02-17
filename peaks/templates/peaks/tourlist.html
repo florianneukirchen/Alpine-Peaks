@@ -13,6 +13,9 @@ Latest tours |
         <div class="list-group mb-2">
             {% for tour in tours.all %}
             <div class="list-group-item">
+                {% if user == tour.user %} 
+                <input type="button" class="flright btn btn-sm btn-outline-primary" value="Edit" onclick="location.href='{% url 'edittour' tour.id %}'"/>
+                {% endif %}
                 <div><a href="{% url 'showtour' tour.id %}">{{ tour.heading }}</a> on {{ tour.date }}</div>
                 <div>{{ tour.peak.name }} ({{ tour.peak.ele }} m) </div> 
                 <div class="text-muted mt-2">
