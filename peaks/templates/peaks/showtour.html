@@ -14,7 +14,7 @@
 
         <div class="list-group mb-2">
             <div class="list-group-item list-group-item-dark">
-                <a href="{% url 'peak' tour.peak.slug %}">{{ tour.peak.name }} </a>({{ tour.peak.ele|floatformat:0 }} m)
+                Tour on <a href="{% url 'peak' tour.peak.slug %}">{{ tour.peak.name }} </a>({{ tour.peak.ele|floatformat:0 }} m)
             </div>
             <div class="list-group-item">
                 Date: {{ tour.date }}
@@ -22,9 +22,26 @@
             <div class="list-group-item">
                 {{ tour.text }}
             </div>
-            <div class="list-group-item">
+            <div class="list-group-item text-muted">
                 Posted by {{ tour.user }} on {{ tour.timestamp }}
             </div>
+        </div>
+
+        <div class="list-group mb-2">
+            <div class="list-group-item list-group-item-dark">
+                Waypoints
+            </div>
+            {% for wp in tour.waypoints.all %}
+            <div class="list-group-item">
+                Nr. {{ wp.number }} {% if wp.name %}| {{ wp.name }}{% endif %}
+                <div class="text-muted"><small>{{ wp.lat|floatformat:5 }}, {{ wp.lon|floatformat:5 }}</small></div>
+            </div>
+            {% empty %}
+            <div class="list-group-item">
+                No waypoints.
+            </div>
+            {% endfor %}
+
         </div>
 
         {% if user == tour.user  %}

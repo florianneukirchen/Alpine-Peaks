@@ -227,7 +227,6 @@ def tour(request, id=None):
                         waypoint.name = wp['name']
                         waypoint.tour = tour
                         waypoint.save()
-                        print(waypoint)
 
             # Delete any left over old waypoints
             for wp in oldwaypoints:
