@@ -29,18 +29,18 @@
             {{ wpformset.management_form }}
             {{ tourform.as_div }}
 
-                <label>Waypoints:</label>
+                <label class="mt-3 h5">Waypoints:</label>
 
                 {% for waypoint in wpformset %}
                 {{ waypoint.non_field_errors }}
                 {{ waypoint.errors }}
                 {% endfor %}
-                <table>
+                <table class="table">
                     <thead>
                         <tr>
-                            <td>Nr.</td>
-                            <td>Name</td>
-                            <td>Lat, Lon</td>
+                            <th scope="col">#</td>
+                            <th scope="col">Name</td>
+                            <th scope="col">Lat, Lon</td>
                         </tr>
                     </thead>
                     <tbody>            
