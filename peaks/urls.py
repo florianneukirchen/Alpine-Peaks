@@ -13,5 +13,7 @@ urlpatterns = [
     path("register", views.register, name="register"),
     path("profile/<str:username>", views.profile, name="profile"),
     path("tour/<int:id>", views.showtour, name="showtour"),
-    path("tour/", views.tour, name="tour"),
+    path("tour/", views.showtour, name="tourlist"),
+    path("edit/<int:id>", views.tour, name="edittour"),
+    path("edit/", views.tour, name="newtour"),
 ]
