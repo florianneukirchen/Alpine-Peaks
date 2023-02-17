@@ -106,6 +106,8 @@ class Tour(models.Model):
         return f"{self.id}: {self.heading} on peak {self.peak.id} by {self.user.username}"
 
 class Waypoint(models.Model):
+    class Meta:
+        ordering = ['number']
     tour = models.ForeignKey("Tour", on_delete=models.CASCADE, related_name="waypoints")
     number = models.IntegerField(blank=True, null=True)
     name = models.CharField(max_length=255, blank=True, null=True)
