@@ -23,8 +23,7 @@ class WaypointForm(forms.ModelForm):
         model = Waypoint
         fields = ['number', 'name', 'lat', 'lon']
         widgets = {
-           'number': forms.HiddenInput(),
-           # 'number': forms.NumberInput(),
+            'number': forms.HiddenInput(),
             'lat': forms.HiddenInput(),
             'lon': forms.HiddenInput(),
         }
@@ -35,7 +34,6 @@ class WaypointForm(forms.ModelForm):
     # Add Bootstraps CSS classes
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['number'].disabled = True
         self.fields['name'].widget.attrs['class'] = 'form-control'
         self.fields['name'].widget.attrs['placeholder'] = 'Name'
 
@@ -48,7 +46,7 @@ WaypointFormset = formset_factory(WaypointForm)
 
 
 class TourForm(forms.ModelForm):
-    waypoints = WaypointFormset
+    waypoints = WaypointFormset()
     class Meta:
         model = Tour
         fields = ['heading', 'text', 'date', 'peak']

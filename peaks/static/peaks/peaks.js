@@ -245,13 +245,13 @@ function addWaypoint(e) {
     var newElement = oldElement.clone(true);
 
     // Set lat lon
-    oldElement.find('.latlon').html('<small>' + lat.toFixed(4) + ', ' + lon.toFixed(4) + '</small>')
-    oldElement.find("input[name*='lat']").val(lat)
-    oldElement.find("input[name*='lon']").val(lon)
+    oldElement.find('.latlon').html('<small>' + lat.toFixed(4) + ', ' + lon.toFixed(4) + '</small>');
+    oldElement.find("input[name*='lat']").val(lat);
+    oldElement.find("input[name*='lon']").val(lon);
 
-    // Update index numbers of new element
+    // Update index numbers 
     var total = $('#id_form-TOTAL_FORMS').val();
-    console.log(total)
+    oldElement.find("input[name*='number']").val(total);
     newElement.find(':input').each(function() {
         var name = $(this).attr('name').replace('-' + (total-1) + '-','-' + total + '-');
         var id = 'id_' + name;

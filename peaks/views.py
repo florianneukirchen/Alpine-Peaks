@@ -166,8 +166,11 @@ def profile(request, username):
 def tour(request):
     if request.method == "POST":
         form = TourForm(request.POST)
-        print(form)
+        waypointformset = WaypointFormset(request.POST)
+        print(waypointformset)
+
         if form.is_valid():
+            # Get instance of tour without commiting to DB
             tour = form.save(commit=False)
 
             try:
@@ -176,7 +179,7 @@ def tour(request):
                 
             except Tour.user.RelatedObjectDoesNotExist:
                 # New tour
-                pass
+                oldwaypoints = []
 
             else:
                 # Edit: Check if editing is allowed
@@ -186,10 +189,43 @@ def tour(request):
                     return HttpResponse(status=400)
                 if oldversion.user != request.user or user != request.user:
                     return HttpResponse(status=400)
- 
+                oldwaypoints = list(oldversion.waypoints.all())
+            
             tour.user = request.user
 
+            # Commit to DB
             tour.save()
+
+            # Waypoints
+            if waypointformset.cleaned_data is not None:
+                for wp in waypointformset.cleaned_data:
+                    print(wp)
+
+                    try:
+                        lat = int(wp['lat'])
+                        lon = int(wp['lon'])
+                        number = int(wp['number'])
+                    except (ValueError, TypeError, KeyError):
+                        # Ignore invalid data and empty forms
+                        pass
+                    else:
+                        if len(oldwaypoints) > 0:
+                            waypoint = oldwaypoints.pop()
+                        else:
+                            waypoint = Waypoint()
+                        waypoint.number = number
+                        waypoint.lat = lat
+                        waypoint.lon = lon
+                        waypoint.name = wp['name']
+                        waypoint.tour = tour
+                        waypoint.save()
+                        print(waypoint)
+
+            # Delete any left over old waypoints
+            for wp in oldwaypoints:
+                wp.delete()
+
+            # Redirect to the site of the tour
             return HttpResponseRedirect(reverse("showtour", kwargs={'id': tour.id}))
         else:
             print(form.errors)

@@ -107,10 +107,10 @@ class Tour(models.Model):
 
 class Waypoint(models.Model):
     tour = models.ForeignKey("Tour", on_delete=models.CASCADE, related_name="waypoints")
-    number = models.IntegerField()
-    name = models.CharField(max_length=255)
-    lat = models.FloatField()
-    lon = models.FloatField()
+    number = models.IntegerField(blank=True, null=True)
+    name = models.CharField(max_length=255, blank=True, null=True)
+    lat = models.FloatField(blank=True, null=True)
+    lon = models.FloatField(blank=True, null=True)
 
     def __str__(self):
-        return f"Waypoint {self.number} on {self.tour.heading}"
+        return f"<WP {self.number}> {self.name} ({self.tour.heading})"
