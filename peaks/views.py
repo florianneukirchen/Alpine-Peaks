@@ -164,9 +164,16 @@ def profile(request, username):
 
 @login_required
 def tour(request, id=None):
+    if id:
+        # Edit mode
+        try:
+            tour = Tour.objects.get(id=id)
+        except (Tour.DoesNotExist, ValueError):
+            raise Http404("Page not found")
+
     if request.method == "POST":
         print(request.POST)
-        form = TourForm(request.POST)
+        form = TourForm(request.POST, instance=tour)
         waypointformset = WaypointFormset(request.POST)
 
         if form.is_valid():
@@ -233,10 +240,8 @@ def tour(request, id=None):
             return HttpResponse("Invalid form", status=400)
 
     # GET
-    if request.method == "GET":
-        print(request.GET)
-
     if request.GET.get('new'):
+        # New tour
         peakid = request.GET.get('new')
         try:
             peak = Peak.objects.get(id=peakid)
@@ -249,16 +254,11 @@ def tour(request, id=None):
             "peak": peak,
         })
 
-    elif request.GET.get('edit'):
-        try:
-            tour = Tour.objects.get(id=int(request.GET.get('edit')))
-        except (Tour.DoesNotExist, ValueError):
-            raise Http404("Page not found")
-
+    elif id:
+        # Edit mode
                 
         if tour.user != request.user:
             return HttpResponse(status=400)
-
 
         return render(request, "peaks/tour.html",{
              "tourform": TourForm(instance=tour),
