@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import formset_factory
+from django.forms import formset_factory, modelformset_factory
 from .models import Tour, Waypoint
 
 
@@ -17,6 +17,9 @@ class OrderSelect(forms.Form):
 
 # https://stackoverflow.com/questions/501719/dynamically-adding-a-form-to-a-django-formset
 # https://simpleit.rocks/python/django/dynamic-add-form-with-add-button-in-django-modelformset-template/
+# https://groups.google.com/g/django-users/c/Gk4H2ABEPyI
+# https://stackoverflow.com/questions/61285171/initialize-a-formset
+
 
 class WaypointForm(forms.ModelForm):
     class Meta:
@@ -41,12 +44,12 @@ class WaypointForm(forms.ModelForm):
 
 
 
-WaypointFormset = formset_factory(WaypointForm)
+WaypointFormset = modelformset_factory(Waypoint, form=WaypointForm)
 
 
 
 class TourForm(forms.ModelForm):
-    waypoints = WaypointFormset()
+    # waypoints = WaypointFormset()
     class Meta:
         model = Tour
         fields = ['heading', 'text', 'date', 'peak']

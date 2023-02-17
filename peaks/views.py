@@ -202,8 +202,8 @@ def tour(request):
                     print(wp)
 
                     try:
-                        lat = int(wp['lat'])
-                        lon = int(wp['lon'])
+                        lat = float(wp['lat'])
+                        lon = float(wp['lon'])
                         number = int(wp['number'])
                     except (ValueError, TypeError, KeyError):
                         # Ignore invalid data and empty forms
@@ -240,6 +240,7 @@ def tour(request):
             raise Http404("Page not found")
         return render(request, "peaks/tour.html",{
             "tourform": TourForm(initial={'peak': peakid}),
+            "wpformset": WaypointFormset(queryset=Waypoint.objects.none()),
             "title": f"New tour on {peak.name}",
             "peak": peak,
         })
@@ -257,6 +258,7 @@ def tour(request):
 
         return render(request, "peaks/tour.html",{
              "tourform": TourForm(instance=tour),
+             "wpformset": WaypointFormset(queryset=Waypoint.objects.filter(tour=tour)),
              "title": f"Edit tour on {tour.peak.name}",
              "peak": tour.peak,
         })

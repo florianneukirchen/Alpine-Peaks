@@ -21,13 +21,13 @@
 
         <form action="{% url 'tour' %}" method="post"> 
             {% csrf_token %}
-            {{ tourform.waypoints.management_form }}
+            {{ wpformset.management_form }}
             {{ tourform.as_div }}
             <input type="hidden" id="peakid" name="peakid" value="{{ peakid }}">
 
                 <label>Waypoints:</label>
 
-                {% for waypoint in tourform.waypoints %}
+                {% for waypoint in wpformset %}
                 {{ waypoint.non_field_errors }}
                 {{ waypoint.errors }}
                 {% endfor %}
@@ -40,7 +40,7 @@
                         </tr>
                     </thead>
                     <tbody>            
-                {% for waypoint in tourform.waypoints %}
+                {% for waypoint in wpformset %}
                         <tr class="wp">
                             <td class="wpnumber">1</td>
                             <td>{{ waypoint.name }}{{ waypoint.lat }}{{ waypoint.lon }}{{ waypoint.number }}</td>
