@@ -60,7 +60,7 @@
         </form>
     </div>
     <div class="col-sm-12 col-md-6 col-lg-6">
-        <div id="map" data-lat="{{ peak.lat }}" data-lon="{{ peak.lon }}" data-region="{{ peak.region.slug }}" data-mode="edittour">
+        <div id="map" data-lat="{{ peak.lat }}" data-lon="{{ peak.lon }}" data-region="{{ peak.region.slug }}" data-mode="edittour" data-tour="{% if tourid %}{{ tourid }}{% endif %}">
         </div>
     </div>
 </div>

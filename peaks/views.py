@@ -173,7 +173,12 @@ def tour(request, id=None):
 
     if request.method == "POST":
         print(request.POST)
-        form = TourForm(request.POST, instance=tour)
+        if id:
+            # Edit
+            form = TourForm(request.POST, instance=tour)
+        else:
+            # New
+            form = TourForm(request.POST)
         waypointformset = WaypointFormset(request.POST)
 
         if form.is_valid():
