@@ -233,6 +233,9 @@ def tour(request, id=None):
             return HttpResponse("Invalid form", status=400)
 
     # GET
+    if request.method == "GET":
+        print(request.GET)
+
     if request.GET.get('new'):
         peakid = request.GET.get('new')
         try:
@@ -262,6 +265,7 @@ def tour(request, id=None):
              "wpformset": WaypointFormset(queryset=Waypoint.objects.filter(tour=tour)),
              "title": f"Edit tour on {tour.peak.name}",
              "peak": tour.peak,
+             "tourid": tour.id,
         })
 
     else:
@@ -272,115 +276,7 @@ def tour(request, id=None):
             "tours": tours,
         })
           
-@login_required
-def tourbak(request):
-    if request.method == "POST":
-        print(request.POST)
-        form = TourForm(request.POST)
-        waypointformset = WaypointFormset(request.POST)
 
-        if form.is_valid():
-            # Get instance of tour without commiting to DB
-            tour = form.save(commit=False)
-
-            try:
-                # Edit tour
-                user = tour.user
-                
-            except Tour.user.RelatedObjectDoesNotExist:
-                # New tour
-                oldwaypoints = []
-
-            else:
-                # Edit: Check if editing is allowed
-                try:
-                    oldversion = Tour.objects.get(id=tour.id)
-                except Tour.DoesNotExist:
-                    return HttpResponse(status=400)
-                if oldversion.user != request.user or user != request.user:
-                    return HttpResponse(status=400)
-                oldwaypoints = list(oldversion.waypoints.all())
-            
-            tour.user = request.user
-
-            # Commit to DB
-            tour.save()
-
-            # Waypoints
-            if waypointformset.is_valid():
-                for wp in waypointformset.cleaned_data:
-                    print(wp)
-
-                    try:
-                        lat = float(wp['lat'])
-                        lon = float(wp['lon'])
-                        number = int(wp['number'])
-                    except (ValueError, TypeError, KeyError):
-                        # Ignore invalid data and empty forms
-                        pass
-                    else:
-                        print(lat, lon)
-                        if len(oldwaypoints) > 0:
-                            waypoint = oldwaypoints.pop()
-                        else:
-                            waypoint = Waypoint()
-                        waypoint.number = number
-                        waypoint.lat = lat
-                        waypoint.lon = lon
-                        waypoint.name = wp['name']
-                        waypoint.tour = tour
-                        waypoint.save()
-                        print(waypoint)
-
-            # Delete any left over old waypoints
-            for wp in oldwaypoints:
-                wp.delete()
-
-            # Redirect to the site of the tour
-            return HttpResponseRedirect(reverse("showtour", kwargs={'id': tour.id}))
-        else:
-            print(form.errors)
-            return HttpResponse("Invalid form", status=400)
-
-    # GET
-    if request.GET.get('new'):
-        peakid = request.GET.get('new')
-        try:
-            peak = Peak.objects.get(id=peakid)
-        except Peak.DoesNotExist:
-            raise Http404("Page not found")
-        return render(request, "peaks/tour.html",{
-            "tourform": TourForm(initial={'peak': peakid}),
-            "wpformset": WaypointFormset(queryset=Waypoint.objects.none()),
-            "title": f"New tour on {peak.name}",
-            "peak": peak,
-        })
-
-    elif request.GET.get('edit'):
-        try:
-            tour = Tour.objects.get(id=int(request.GET.get('edit')))
-        except (Tour.DoesNotExist, ValueError):
-            raise Http404("Page not found")
-
-                
-        if tour.user != request.user:
-            return HttpResponse(status=400)
-
-
-        return render(request, "peaks/tour.html",{
-             "tourform": TourForm(instance=tour),
-             "wpformset": WaypointFormset(queryset=Waypoint.objects.filter(tour=tour)),
-             "title": f"Edit tour on {tour.peak.name}",
-             "peak": tour.peak,
-        })
-
-    else:
-        # Show latest tours
-        tours = Tour.objects.all().order_by('-timestamp')[:20]
-
-        return render(request, "peaks/tourlist.html", {
-            "tours": tours,
-        })
 
 def showtour(request, id=None):
     if id:

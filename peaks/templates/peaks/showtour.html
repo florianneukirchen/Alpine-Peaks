@@ -29,7 +29,7 @@
 
         {% if user == tour.user  %}
         <div>
-            <input type="button" class="btn btn-primary" value="Edit" onclick="location.href='/tour/?edit={{ tour.id }}'"/>
+            <input type="button" class="btn btn-primary" value="Edit" onclick="location.href='{% url 'edittour' tour.id %}'"/>
         </div>
         {% endif %}
 

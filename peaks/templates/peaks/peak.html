@@ -86,14 +86,14 @@
             <div class="list-group-item list-group-item-dark">
                 Tours 
                 {% if user.is_authenticated %}
-                <input type="button" class="flright btn btn-sm btn-outline-primary" value="New" onclick="location.href='/tour/?new={{ peak.id }}'"/>
+                <input type="button" class="flright btn btn-sm btn-outline-primary" value="New" onclick="location.href='/edit/?new={{ peak.id }}'"/>
                 {% endif %}
             </div>
             {% for tour in peak.tours.all %}
 
             <div class="list-group-item">
                 {% if user == tour.user %} 
-                <input type="button" class="flright btn btn-sm btn-outline-primary" value="Edit" onclick="location.href='/tour/?edit={{ tour.id }}'"/>
+                <input type="button" class="flright btn btn-sm btn-outline-primary" value="Edit" onclick="location.href='{% url 'edittour' tour.id %}'"/>
                 {% endif %}
                 <a href="{% url 'showtour' tour.id %}">{{ tour.heading }}</a> ({{ tour.date }})
                 <div class="text-muted mt-2">

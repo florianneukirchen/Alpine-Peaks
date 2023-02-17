@@ -19,7 +19,12 @@
             </ul>
         {% endif %}
 
-        <form action="{% url 'tour' %}" method="post"> 
+        {% if tourid %}
+        <form action="{% url 'edittour' tourid %}" method="post"> 
+        {% else %}
+        <form action="{% url 'newtour' %}" method="post"> 
+        {% endif %}
+        
             {% csrf_token %}
             {{ wpformset.management_form }}
             {{ tourform.as_div }}
