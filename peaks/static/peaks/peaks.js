@@ -1,6 +1,6 @@
-// TODO https://stackoverflow.com/questions/48459095/leaflet-on-drag-updating-lat-lng-variables
-
-var map; // global
+// global variables
+var map; 
+const markers = [];
 
 $(document).ready(function(){
     // Select order
@@ -87,12 +87,14 @@ $(document).ready(function(){
         // Tour edit 
         if (mode === "edittour"){
             // Get existing waypoints
-            $.get(`/waypoints/${tour}`, function(data, status){             
-                var gjsonlayer = L.geoJSON(data, {
-                    onEachFeature: onEachWaypointDragable
-                }).addTo(map);
-            });
-
+            if (tour){
+                $.get(`/waypoints/${tour}`, function(data, status){             
+                    var gjsonlayer = L.geoJSON(data, {
+                        onEachFeature: onEachWaypointDragable
+                    }).addTo(map);
+                });
+            }
+            
             // listen to map click events
             map.on('click', addWaypoint);
 
@@ -108,6 +110,44 @@ $(document).ready(function(){
                     $(this).find('.latlon').html('<small>' + lat.toFixed(4) + ', ' + lon.toFixed(4) + '</small>');
                 }
 
+            });
+
+            // Delete WP button
+            console.log($('#id_form-TOTAL_FORMS').val())
+            if ($('#id_form-TOTAL_FORMS').val() > 1){
+                $("#deletewpbtn").prop('disabled', false);
+            }
+
+            $("#deletewpbtn").click(function(){
+                const m = markers.pop()
+
+                if (m != undefined){
+                    // remove marker
+                    m.remove()
+                    
+                    // Remove last (empty) WP from table
+                    $('.wp:last').remove()
+
+                    // Update total
+                    const total = $('#id_form-TOTAL_FORMS').val();
+                    $('#id_form-TOTAL_FORMS').val(total - 1);
+
+                    // Clear last (non empty) WP
+                    $('.wp:last').find('.latlon').text('Click on map');
+                    $('.wp:last').find("input[name*='lat']").val("");
+                    $('.wp:last').find("input[name*='lon']").val("");
+                    $('.wp:last').find("input[name*='name']").val("");
+                    $('.wp:last').find('.wpnumber').text("New");
+
+                    // Evtually disable delete button
+                    if ($('#id_form-TOTAL_FORMS').val() <= 1){
+                        $("#deletewpbtn").prop('disabled', true);
+                    }
+
+                } 
+
+
+                
             });
         }
 
@@ -322,6 +362,8 @@ function onEachWaypointDragable(feature, layer) {
         console.log(`dragged WP ${feature.properties.number} to ${latlng}`);
         draggedWaypoint(feature.properties.number, latlng);
     })
+
+    markers.push(layer);
  }
 
 function draggedWaypoint(n, latlng){
@@ -367,6 +409,8 @@ function addWaypoint(e) {
         draggedWaypoint(total - 1, latlng);
     });
 
+    markers.push(marker);
+
     
     // Update management form 
     total++;
@@ -375,4 +419,7 @@ function addWaypoint(e) {
 
     // Insert new form
     oldElement.after(newElement);
+
+    // Enable delete button
+    $("#deletewpbtn").prop('disabled', false);
 }

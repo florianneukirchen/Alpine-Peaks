@@ -46,13 +46,17 @@
                     <tbody>            
                 {% for waypoint in wpformset %}
                         <tr class="wp">
-                            <td class="wpnumber"></td>
+                            <td class="wpnumber">New</td>
                             <td>{{ waypoint.name }}{{ waypoint.lat }}{{ waypoint.lon }}{{ waypoint.number }}{{ waypoint.id }}</td>
                             <td class="latlon">Click on map</td>
                          </tr>
                 {% endfor %}
                     </tbody>
                 </table>
+                <div class="mb-3">
+                    <small><i>Click on map to add waypoints, drag markers to edit coordinates.</i></small>
+                    <button type="button" class="btn btn-sm btn-outline-danger flright" id="deletewpbtn" disabled>Delete last WP</button>
+                </div>
 
                               
             <input type="submit" value="Submit" class="btn btn-primary mt-3 mb-3">
