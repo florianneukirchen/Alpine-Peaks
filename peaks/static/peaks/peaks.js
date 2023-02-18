@@ -1,3 +1,5 @@
+// TODO https://stackoverflow.com/questions/48459095/leaflet-on-drag-updating-lat-lng-variables
+
 var map; // global
 
 $(document).ready(function(){
@@ -73,11 +75,9 @@ $(document).ready(function(){
             });
         }
 
-        console.log(`tour ${tour}`)
         // Tour: show waypoint markers
-        if (mode === "tour" || mode === "edittour"){
-            $.get(`/waypoints/${tour}`, function(data, status){
-                
+        if (mode === "tour"){
+            $.get(`/waypoints/${tour}`, function(data, status){             
                 var gjsonlayer = L.geoJSON(data, {
                     onEachFeature: onEachWaypoint
                 }).addTo(map);
@@ -86,6 +86,13 @@ $(document).ready(function(){
 
         // Tour edit 
         if (mode === "edittour"){
+            // Get existing waypoints
+            $.get(`/waypoints/${tour}`, function(data, status){             
+                var gjsonlayer = L.geoJSON(data, {
+                    onEachFeature: onEachWaypointDragable
+                }).addTo(map);
+            });
+
             // listen to map click events
             map.on('click', addWaypoint);
 
@@ -265,6 +272,8 @@ function onEachFeature2(feature, layer) {
     
 }
 
+// Based on http://blog.charliecroom.com/index.php/web/numbered-markers-in-leaflet
+
 L.NumberedDivIcon = L.Icon.extend({
     options: {
     iconUrl: '/static/peaks/wpmarker.png',
@@ -273,10 +282,6 @@ L.NumberedDivIcon = L.Icon.extend({
     iconSize: new L.Point(25, 41),
     iconAnchor: new L.Point(13, 41),
     popupAnchor: new L.Point(0, -33),
-    /*
-    iconAnchor: (Point)
-    popupAnchor: (Point)
-    */
     className: 'leaflet-div-icon'
     },
     
@@ -292,7 +297,6 @@ L.NumberedDivIcon = L.Icon.extend({
     return div;
     },
     
-    //you could change this to add a shadow like in the normal marker if you really wanted
     createShadow: function () {
     return null;
     }
@@ -300,20 +304,37 @@ L.NumberedDivIcon = L.Icon.extend({
 
 
 function onEachWaypoint(feature, layer) {
-
-    // http://blog.charliecroom.com/index.php/web/numbered-markers-in-leaflet
-
-
-
-    layer.bindTooltip(feature.properties.name);
+    if (feature.properties.name) {
+        layer.bindTooltip(feature.properties.name);
+    }
     var icon = new L.NumberedDivIcon({number: `${feature.properties.number}`})
     layer.setIcon(icon);
-  
-   
 }
 
+function onEachWaypointDragable(feature, layer) {
+    var icon = new L.NumberedDivIcon({number: `${feature.properties.number}`})
+    layer.setIcon(icon);
+
+    // Listen to drag events
+    layer.options.draggable = true;
+    layer.on('dragend', function(e) {
+        var latlng = layer.getLatLng();
+        console.log(`dragged WP ${feature.properties.number} to ${latlng}`);
+        draggedWaypoint(feature.properties.number, latlng);
+    })
+ }
+
+function draggedWaypoint(n, latlng){
+    // find the n-th row in the table and update lat lon
+    var row = $('.wp').eq(n - 1);
+    row.find('.latlon').html('<small>' + latlng.lat.toFixed(4) + ', ' + latlng.lng.toFixed(4) + '</small>');
+    row.find("input[name*='lat']").val(latlng.lat);
+    row.find("input[name*='lon']").val(latlng.lng);
+}
+
+
 function addWaypoint(e) {
-    console.log(e.latlng)
+    console.log(`new wp ${e.latlng}`)
     const lat = e.latlng.lat;
     const lon = e.latlng.lng;
     // Clone the last (still empty) waypoint
@@ -336,9 +357,15 @@ function addWaypoint(e) {
     });
     
     // Show marker
-    new L.Marker(e.latlng, {
+    marker = new L.Marker(e.latlng, {
+        draggable: true,
         icon: new L.NumberedDivIcon({number: `${total}`})
-        }).addTo(map);;
+        }).addTo(map);
+    
+    marker.on("dragend", function(e){
+        var latlng = e.target.getLatLng();
+        draggedWaypoint(total - 1, latlng);
+    });
 
     
     // Update management form 
