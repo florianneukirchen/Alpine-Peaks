@@ -6,13 +6,16 @@ You can get information about all peaks higher than 1000 m, and users can add th
 
 ## Distinctiveness and Complexity
 - Django:
-    - I had to write (and learn how to write) a data migration to get data from OpenStreetMap into the database.
-    - I use slugs for the urls (and learned how to do so).
+    - I had to write (and learn how to write) a [data migration](https://docs.djangoproject.com/en/4.1/howto/writing-migrations/) to get data of peaks into the database.
+    - Use djangos [model forms](https://docs.djangoproject.com/en/4.1/topics/forms/modelforms/) to generate forms. 
+    - Dynamically generate forms to add waypoints to a tour using a [formset](https://docs.djangoproject.com/en/4.1/topics/forms/formsets/). When editing a tour, initialize the formset with existing waypoints. (Used references: [1](https://groups.google.com/g/django-users/c/Gk4H2ABEPyI), [2](https://stackoverflow.com/questions/61285171/initialize-a-formset), [3](https://stackoverflow.com/questions/1992152/django-initializing-a-formset-of-custom-forms-with-instances), [4](https://simpleit.rocks/python/django/dynamic-add-form-with-add-button-in-django-modelformset-template/) )
+    - Use slugs for the urls.
     - Implement an API that returns coordinates as GeoJSON.
-- Javascript:
-    - After learning jQuery I tried to use jQuery as much as possible.
-    - Get Wikipedia extract and thumbnail image (including image rights) with AJAX from Wikipedia API.
+- Javascript:  
+    - Get Wikipedia extract and thumbnail image (including image rights) with AJAX from [Wikipedia API](https://www.mediawiki.org/wiki/API:Main_page).
     - Use [Leaflet](https://leafletjs.com/) to show a map. 
+    - Add waypoint markers with click on the map and edit coordinates by dragging markers (the numbered markers are adapted from this [post](https://stackoverflow.com/questions/1992152/django-initializing-a-formset-of-custom-forms-with-instances))
+    - After learning jQuery I tried to use jQuery as much as possible.
 
 - Data:
     - I used python and geopandas to clean and enrich the data originally downloaded from OpenStreetMap.
