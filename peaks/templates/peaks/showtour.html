@@ -46,8 +46,12 @@
 
         {% if user == tour.user  %}
         <div>
-            <input type="button" class="btn btn-primary" value="Edit" onclick="location.href='{% url 'edittour' tour.id %}'"/>
+            <input type="button" class="btn btn-primary mb-3" value="Edit" onclick="location.href='{% url 'edittour' tour.id %}'"/>
+            <button class="btn btn-danger deletetourbtn mb-3" value="{{ tour.id }}">Delete</button>
         </div>
+        <script>
+            var CSRF_TOKEN = '{{ csrf_token }}';
+        </script>
         {% endif %}
 
     </div>

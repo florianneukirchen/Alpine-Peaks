@@ -95,9 +95,11 @@
                 {% if user == tour.user %} 
                 <input type="button" class="flright btn btn-sm btn-outline-primary" value="Edit" onclick="location.href='{% url 'edittour' tour.id %}'"/>
                 {% endif %}
-                <a href="{% url 'showtour' tour.id %}">{{ tour.heading }}</a> ({{ tour.date }})
+                <div class="h6">
+                    <a href="{% url 'showtour' tour.id %}">{{ tour.heading }}</a> ({{ tour.date }})
+                </div>
                 <div class="text-muted mt-2">
-                    Posted by {{ tour.user }}  on {{ tour.timestamp }}
+                    Posted by <a href="{% url 'profile' tour.user %}">{{ tour.user }}</a>  on {{ tour.timestamp }}
                 </div>
             </div>
 

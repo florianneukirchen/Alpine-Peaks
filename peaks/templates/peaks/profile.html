@@ -20,8 +20,8 @@
             {% if user == tour.user %} 
             <input type="button" class="flright btn btn-sm btn-outline-primary" value="Edit" onclick="location.href='{% url 'edittour' tour.id %}'"/>
             {% endif %}
-            <div><a href="{% url 'showtour' tour.id %}">{{ tour.heading }}</a> on {{ tour.date }}</div>
-            <div>{{ tour.peak.name }} ({{ tour.peak.ele }} m) </div> 
+            <div class="h5"><a href="{% url 'showtour' tour.id %}">{{ tour.heading }}</a> on {{ tour.date }}</div>
+            <div><a href="{% url 'peak' tour.peak.slug %}">{{ tour.peak.name }}</a> ({{ tour.peak.ele }} m) </div> 
             <div class="text-muted mt-2">
                 Posted by {{ tour.user }}  on {{ tour.timestamp }}
             </div>

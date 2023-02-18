@@ -165,14 +165,29 @@ def profile(request, username):
 @login_required
 def tour(request, id=None):
     if id:
-        # Edit mode
+        # Edit or delete mode
         try:
             tour = Tour.objects.get(id=id)
         except (Tour.DoesNotExist, ValueError):
             raise Http404("Page not found")
 
+        # Delete mode
+        if request.method == "DELETE":
+            if tour.user != request.user:
+                count, _ = tour.delete()
+                if count == 1:
+                    return HttpResponse(status=200)
+                else:
+                    # Not succesfull (request not valid)
+                    return HttpResponse(status=404)
+            else:
+                # Forbidden
+                return HttpResponse(status=403)
+
+        
+
+    # POST (edit or new tour)
     if request.method == "POST":
-        print(request.POST)
         if id:
             # Edit
             form = TourForm(request.POST, instance=tour)
@@ -183,11 +198,11 @@ def tour(request, id=None):
         
         if form.is_valid():
             # Get instance of tour without commiting to DB
-            tour = form.save(commit=False)
+            tourpost = form.save(commit=False)
 
             try:
                 # Edit tour
-                user = tour.user
+                user = tourpost.user
                 
             except Tour.user.RelatedObjectDoesNotExist:
                 # New tour
@@ -195,29 +210,18 @@ def tour(request, id=None):
 
             else:
                 # Edit: Check if editing is allowed
-                try:
-                    oldversion = Tour.objects.get(id=tour.id)
-                except Tour.DoesNotExist:
+                if tour.user != request.user or user != request.user:
                     return HttpResponse(status=400)
-                if oldversion.user != request.user or user != request.user:
-                    return HttpResponse(status=400)
-                oldwaypoints = list(oldversion.waypoints.all())
+                oldwaypoints = list(tour.waypoints.all())
             
-            tour.user = request.user
+            tourpost.user = request.user
 
-            # Commit to DB
-            tour.save()
+            # Commit new version to DB
+            tourpost.save()
 
             # Waypoints
-            print(waypointformset)
-            print('valid', waypointformset.is_valid())
-            print(waypointformset.non_form_errors())
-            print(waypointformset.errors)
-
             if waypointformset.is_valid():
                 for wp in waypointformset.cleaned_data:
-                    print(wp)
-
                     try:
                         lat = float(wp['lat'])
                         lon = float(wp['lon'])

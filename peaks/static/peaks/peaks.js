@@ -8,6 +8,20 @@ $(document).ready(function(){
         this.form.submit();
     })
 
+    // Delete Tour button
+    $(".deletetourbtn").click(function(){
+        const id = $(this).attr("value");
+        $.ajax({
+            url: `/tour/${id}`,
+            headers: {"X-CSRFToken": CSRF_TOKEN }, 
+            type: 'DELETE',
+            success: function(result) {
+                console.log(result);
+            }
+        });
+    });
+
+
     // load map if map div exists
     if ($("#map").length) {
         const mapdiv = document.getElementById('map');
