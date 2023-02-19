@@ -84,7 +84,7 @@
 
         <div class="list-group mb-2">
             <div class="list-group-item list-group-item-dark">
-                Tours 
+                {{ peak.tours.count }} Tours 
                 {% if user.is_authenticated %}
                 <input type="button" class="flright btn btn-sm btn-primary" value="New" onclick="location.href='/edit/?new={{ peak.id }}'"/>
                 {% endif %}

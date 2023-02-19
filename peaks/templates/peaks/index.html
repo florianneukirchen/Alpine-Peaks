@@ -43,6 +43,9 @@
                     {% endif %}
                     <div>{% for country in peak.countries.all %} <a href="{% url 'region' country.slug %}">{{ country.name }}</a>, {% endfor %}</div>
                 </div>
+                <div class="card-footer text-muted">
+                    {{ peak.tours.count }} tours
+                </div>
             </div>
             {% endfor %}
 
