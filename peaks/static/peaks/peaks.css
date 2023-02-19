@@ -32,3 +32,7 @@ img.maxwidth {
     width: 25px;
     text-align: center;
 }
+
+.likes:hover {
+    cursor: pointer;
+}

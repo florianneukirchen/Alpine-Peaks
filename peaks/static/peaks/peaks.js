@@ -119,7 +119,7 @@ $(document).ready(function(){
                 });
 
                 var toppeakleayer = L.geoJSON(filtered, {
-                    onEachFeature: onEachFeature2
+                    onEachFeature: onEachTopPeak
                 }).addTo(map);
             });
         }
@@ -344,7 +344,7 @@ function onEachFeature(feature, layer) {
     
 }
 
-function onEachFeature2(feature, layer) {
+function onEachTopPeak(feature, layer) {
 
     const mountainIconGrey = L.icon({
         iconUrl: '/static/peaks/mountain-grey.svg',
@@ -398,6 +398,8 @@ function onEachWaypoint(feature, layer) {
     }
     var icon = new L.NumberedDivIcon({number: `${feature.properties.number}`})
     layer.setIcon(icon);
+
+    markers.push(layer);
 }
 
 function onEachWaypointDragable(feature, layer) {

@@ -37,8 +37,8 @@
                 Waypoints
             </div>
             {% for wp in tour.waypoints.all %}
-            <div class="list-group-item">
-                Nr. {{ wp.number }} {% if wp.name %}| {{ wp.name }}{% endif %}
+            <div class="list-group-item wpitem">
+                Nr. <span class="nr">{{ wp.number }}</span> {% if wp.name %}| {{ wp.name }}{% endif %}
                 <div class="text-muted"><small>{{ wp.lat|floatformat:5 }}, {{ wp.lon|floatformat:5 }}</small></div>
             </div>
             {% empty %}
