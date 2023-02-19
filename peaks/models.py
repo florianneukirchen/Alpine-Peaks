@@ -84,6 +84,14 @@ class Peak(models.Model):
                 "region": self.region.slug
             }
         }
+    
+    @property
+    def likes(self):
+        likes = 0
+        tours = self.tours.all()
+        for tour in tours:
+            likes = likes + tour.likes
+        return likes
 
 
 class Tour(models.Model):
@@ -99,7 +107,7 @@ class Tour(models.Model):
         ordering = ['-timestamp']
 
     @property
-    def likes_count(self):
+    def likes(self):
         return self.likedby.all().count()
 
     def __str__(self):

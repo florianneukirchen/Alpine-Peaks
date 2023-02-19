@@ -128,6 +128,7 @@ def peak(request, slug):
     except Peak.DoesNotExist:
         raise Http404("Page not found")
 
+
     return render(request, "peaks/peak.html", {
         "peak": peak,
     })
@@ -348,7 +349,7 @@ def likes(request, id):
     # Return likes
     return JsonResponse({
         "liked": (request.user in tour.likedby.all()),
-        "count": tour.likedby.all().count(),
+        "count": tour.likes,
     }, status=200)
 
 
