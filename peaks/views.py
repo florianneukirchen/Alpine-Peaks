@@ -165,7 +165,7 @@ def profile(request, username):
 @login_required
 def tour(request, id=None):
     if id:
-        # Edit or delete mode
+        # All modes except new tour
         try:
             tour = Tour.objects.get(id=id)
         except (Tour.DoesNotExist, ValueError):
@@ -254,6 +254,25 @@ def tour(request, id=None):
             print(form.errors)
             return HttpResponse("Invalid form", status=400)
 
+    # PUT
+    if request.method == "PUT":
+        # Toggle like
+        if not json.loads(request.body).get("toggle"):
+            return HttpResponse(status=400)
+        # Dont allow users to like their own tours
+        if request.user == tour.user:
+            return HttpResponse(status=403)
+        
+        # Toggle like
+        if request.user in tour.likedby.all():
+            tour.likedby.remove(request.user)
+        else:
+            tour.likedby.add(request.user)
+
+        tour.save()
+        return HttpResponse(status=200) 
+
+
     # GET
     if request.GET.get('new'):
         # New tour
@@ -319,6 +338,18 @@ def waypoints(request, id):
     waypoints = tour.waypoints.all().order_by("number")
 
     return JsonResponse([wp.geojson() for wp in waypoints], safe=False)
+
+def likes(request, id):
+    try:
+        tour = Tour.objects.get(id=id)
+    except Tour.DoesNotExist:
+        raise Http404("Page not found")
+
+    # Return likes
+    return JsonResponse({
+        "liked": (request.user in tour.likedby.all()),
+        "count": tour.likedby.all().count(),
+    }, status=200)
 
 
 def login_view(request):

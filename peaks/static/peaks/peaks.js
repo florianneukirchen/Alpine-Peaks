@@ -3,6 +3,7 @@ var map;
 const markers = [];
 
 $(document).ready(function(){
+
     // Select order
     $("#id_order").change(function(){
         this.form.submit();
@@ -25,6 +26,33 @@ $(document).ready(function(){
                 }
             }
             
+        });
+    });
+
+    // Toggle likes
+    $(".likes").click(function(){
+        const id = $(this).attr("data-id");
+        const element = $(this);
+        $.ajax({
+            url: `/edit/${id}`,
+            headers: {"X-CSRFToken": CSRF_TOKEN }, 
+            type: 'PUT',
+            data: JSON.stringify({
+                'toggle': true,
+            }),
+            success: function(result) {
+                // Update counter and heart
+                $.get(`/likes/${id}`, function(data, status){
+                    element.find(".count").text(`${data.count}`);
+                    if (data.liked) {
+                        element.find(".heart").text("❤️");
+                    } else {
+                        element.find(".heart").text("🤍");
+                    }
+                });
+
+            },
+             
         });
     });
 

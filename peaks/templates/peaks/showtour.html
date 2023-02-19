@@ -23,6 +23,11 @@
                 {{ tour.text }}
             </div>
             <div class="list-group-item text-muted">
+                <span class="text-muted likes" data-id="{{ tour.id }}">
+                    <!-- White heart if not liked yet by user, else red heart -->
+                    <span class="count">{{ tour.likedby.count }}</span>
+                    <span class="heart">{% if user in tour.likedby.all %}❤️{% else %}🤍{% endif %}</span>
+                </span>
                 Posted by {{ tour.user }} on {{ tour.timestamp }}
             </div>
         </div>
@@ -90,5 +95,10 @@
 </div>
 {% endif %}
   
+{% if user.is_authenticated %}
+<script>
+    const CSRF_TOKEN = '{{ csrf_token }}';
+</script>
+{% endif %}
 
 {% endblock %}

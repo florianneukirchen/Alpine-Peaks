@@ -23,6 +23,11 @@
             <div class="h5"><a href="{% url 'showtour' tour.id %}">{{ tour.heading }}</a> on {{ tour.date }}</div>
             <div><a href="{% url 'peak' tour.peak.slug %}">{{ tour.peak.name }}</a> ({{ tour.peak.ele }} m) </div> 
             <div class="text-muted mt-2">
+                <span class="text-muted likes" data-id="{{ tour.id }}">
+                    <!-- White heart if not liked yet by user, else red heart -->
+                    <span class="count">{{ tour.likedby.count }}</span>
+                    <span class="heart">{% if user in tour.likedby.all %}❤️{% else %}🤍{% endif %}</span>
+                </span>
                 Posted by {{ tour.user }}  on {{ tour.timestamp }}
             </div>
         </div>
@@ -49,5 +54,10 @@
         </ul>
     </nav>
 
-
+    {% if user.is_authenticated %}
+    <script>
+        const CSRF_TOKEN = '{{ csrf_token }}';
+    </script>
+    {% endif %}
+    
 {% endblock %}
