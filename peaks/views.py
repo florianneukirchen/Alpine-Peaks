@@ -173,19 +173,21 @@ def tour(request, id=None):
 
         # Delete mode
         if request.method == "DELETE":
-            if tour.user != request.user:
+            print("delete")
+            if tour.user == request.user:
                 count, _ = tour.delete()
+                print(f"Deleted {count} tours")
                 if count == 1:
-                    return HttpResponse(status=200)
+                    return HttpResponse('Tour has been deleted', status=200)
                 else:
                     # Not succesfull (request not valid)
-                    return HttpResponse(status=404)
+                    return HttpResponse('Could not delete tour', status=404)
             else:
+                print("Delete forbidden")
                 # Forbidden
-                return HttpResponse(status=403)
+                return HttpResponse('Forbidden', status=403)
 
         
-
     # POST (edit or new tour)
     if request.method == "POST":
         if id:

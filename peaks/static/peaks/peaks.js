@@ -11,13 +11,20 @@ $(document).ready(function(){
     // Delete Tour button
     $(".deletetourbtn").click(function(){
         const id = $(this).attr("value");
+        $('#confirmDelete').modal('hide'); 
         $.ajax({
-            url: `/tour/${id}`,
+            url: `/edit/${id}`,
             headers: {"X-CSRFToken": CSRF_TOKEN }, 
             type: 'DELETE',
             success: function(result) {
-                console.log(result);
+                window.location.href = REFERER_URL;
+            },
+            statusCode: {
+                404: function (){
+                    alert("Could not delete tour");
+                }
             }
+            
         });
     });
 
