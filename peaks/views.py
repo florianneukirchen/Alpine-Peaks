@@ -176,8 +176,8 @@ def tour(request, id=None):
             print("delete")
             if tour.user == request.user:
                 count, _ = tour.delete()
-                print(f"Deleted {count} tours")
-                if count == 1:
+                print(f"Deleted {count} records (tours/waypoints)")
+                if count >= 1:
                     return HttpResponse('Tour has been deleted', status=200)
                 else:
                     # Not succesfull (request not valid)
