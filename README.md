@@ -43,3 +43,6 @@ This file is the [data migration](https://docs.djangoproject.com/en/4.1/howto/wr
 ```wget https://www.dropbox.com/s/gk055ofbfswigwj/alps.geojson?dl=0 -O alps.geojson```
 
 The data migration reads the peaks data as json and saves it to the database. 
+
+## Limitations
+The Wikipedia article is not always related to the peak.

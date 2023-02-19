@@ -14,7 +14,7 @@ import json
 from .models import *
 from .forms import *
 
-PEAKSPERPAGE = 50
+ITEMSPERPAGE = 50
 
 
 
@@ -73,7 +73,7 @@ def index(request, slug=None):
         title = "Peaks of the Alps"
 
     # Pagination    
-    paginator = Paginator(allpeaks, PEAKSPERPAGE)
+    paginator = Paginator(allpeaks, ITEMSPERPAGE)
     
     try:
         page_number = int(request.GET.get('page'))
@@ -242,7 +242,7 @@ def tour(request, id=None):
                         waypoint.lat = lat
                         waypoint.lon = lon
                         waypoint.name = wp['name']
-                        waypoint.tour = tour
+                        waypoint.tour = tourpost
                         waypoint.save()
 
             # Delete any left over old waypoints
@@ -250,7 +250,7 @@ def tour(request, id=None):
                 wp.delete()
 
             # Redirect to the site of the tour
-            return HttpResponseRedirect(reverse("showtour", kwargs={'id': tour.id}))
+            return HttpResponseRedirect(reverse("showtour", kwargs={'id': tourpost.id}))
         else:
             print(form.errors)
             return HttpResponse("Invalid form", status=400)
