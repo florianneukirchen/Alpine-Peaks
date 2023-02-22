@@ -7,7 +7,7 @@ You can get information about all peaks higher than 1000 m, and users can add th
 ## Distinctiveness and Complexity
 - Django:
     - I had to write (and learn how to write) a [data migration](https://docs.djangoproject.com/en/4.1/howto/writing-migrations/) to get data of peaks into the database.
-    - Use djangos [model forms](https://docs.djangoproject.com/en/4.1/topics/forms/modelforms/) to generate forms. 
+    - Use djangos [model forms](https://docs.djangoproject.com/en/4.1/topics/forms/modelforms/) to generate forms and create instances of models. 
     - Dynamically generate forms to add any number of waypoints to a tour using a [formset](https://docs.djangoproject.com/en/4.1/topics/forms/formsets/). When editing a tour, initialize the formset with existing waypoints. (Used references: [1](https://groups.google.com/g/django-users/c/Gk4H2ABEPyI), [2](https://stackoverflow.com/questions/61285171/initialize-a-formset), [3](https://stackoverflow.com/questions/1992152/django-initializing-a-formset-of-custom-forms-with-instances), [4](https://simpleit.rocks/python/django/dynamic-add-form-with-add-button-in-django-modelformset-template/) )
     - Use slugs for the urls.
     - Implement an API that returns coordinates as GeoJSON.
@@ -30,11 +30,17 @@ The app requires data of the peaks of the Alps that can be downloaded into the w
 
 The data is © [OpenStreetMap](https://www.openstreetmap.org/copyright/en) and Florian Neukirchen under [Open Database License](https://www.openstreetmap.org/copyright/en).
 
-The data was downloaded in [QGIS](https://www.qgis.org/) using the [QuickOSM](https://plugins.qgis.org/plugins/QuickOSM/) plugin (search for natural=peak). It was preprocessed in a Jupyter Notebook ([alpine_peaks.ipynb on GitHub](https://github.com/florianneukirchen/jupyter-notebooks/blob/main/alpine_peaks.ipynb)) with python and geopandas. In QGIS I added the nearest higher peak with my QGIS plugin [nearest greater](https://github.com/florianneukirchen/qgis_nearest_greater) - I wrote this plugin in the last months.
+The data was downloaded in [QGIS](https://www.qgis.org/) using the [QuickOSM](https://plugins.qgis.org/plugins/QuickOSM/) plugin (search for natural=peak). It was preprocessed in a Jupyter Notebook ([alpine_peaks.ipynb on GitHub](https://github.com/florianneukirchen/jupyter-notebooks/blob/main/alpine_peaks.ipynb)) with python and geopandas. In QGIS I added the nearest higher peak with my QGIS plugin [nearest greater](https://github.com/florianneukirchen/qgis_nearest_greater) – I wrote this plugin in the last months.
+
+
+## Requirements
+- django (tested with django 4.1.5)
+- Peak data, see above
 
 
 ## Files
 
+0009_auto....
 
 
 ### peaks/migrations/0002_auto .... .py
@@ -45,4 +51,4 @@ This file is the [data migration](https://docs.djangoproject.com/en/4.1/howto/wr
 The data migration reads the peaks data as json and saves it to the database. 
 
 ## Limitations
-The Wikipedia article is not always related to the peak.
+The article fetched from Wikipedia is not always related to the peak.
