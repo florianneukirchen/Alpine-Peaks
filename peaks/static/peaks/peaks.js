@@ -4,6 +4,9 @@ const markers = [];
 
 $(document).ready(function(){
 
+    // Enable tooltips
+    $('[data-toggle="tooltip"]').tooltip();
+
     // Select order
     $("#id_order").change(function(){
         this.form.submit();

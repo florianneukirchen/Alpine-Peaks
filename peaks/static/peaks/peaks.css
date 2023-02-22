@@ -36,3 +36,7 @@ img.maxwidth {
 .likes:hover {
     cursor: pointer;
 }
+
+.grade {
+    border-bottom: 1px dotted black;
+ }
