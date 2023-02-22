@@ -4,9 +4,11 @@ Alpine Peaks is a web app about the peaks of the Alps, using python, [django](ht
 
 The app shows information about all peaks of the Alps that are higher than 1000 m, including a map and an image and extract from Wikipedia. Users can add their tours with description, grade, tags and waypoints.
 
+![]()
+
 ## Distinctiveness and Complexity
 - Django:
-    - I had to write (and learn how to write) a [data migration](https://docs.djangoproject.com/en/4.1/howto/writing-migrations/) to get data of peaks into the database.
+    - Use a [data migration](https://docs.djangoproject.com/en/4.1/howto/writing-migrations/) to get data of peaks into the database.
     - Use djangos [model forms](https://docs.djangoproject.com/en/4.1/topics/forms/modelforms/) to generate forms and create instances of models. 
     - Dynamically generate forms to add any number of waypoints to a tour using a [formset](https://docs.djangoproject.com/en/4.1/topics/forms/formsets/). When editing a tour, initialize the formset with existing waypoints. (Used references: [1](https://groups.google.com/g/django-users/c/Gk4H2ABEPyI), [2](https://stackoverflow.com/questions/61285171/initialize-a-formset), [3](https://stackoverflow.com/questions/1992152/django-initializing-a-formset-of-custom-forms-with-instances), [4](https://simpleit.rocks/python/django/dynamic-add-form-with-add-button-in-django-modelformset-template/) )
     - Use slugs for the urls.
@@ -26,7 +28,7 @@ The app shows information about all peaks of the Alps that are higher than 1000 
 
 ## Requirements
 - django (tested with django 4.1.5)
-- Download peak data, see below
+- Download peak data, see next section
 
 
 ## <a name="run"></a>Run the Application

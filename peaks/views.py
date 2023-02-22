@@ -243,9 +243,6 @@ def tour(request, id=None):
             # Get instance of tour without commiting to DB
             tourpost = form.save(commit=False)
 
-            for tag in tourpost.tags.all():
-                print(tag)
-
             try:
                 # Edit tour
                 user = tourpost.user
