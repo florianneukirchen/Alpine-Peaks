@@ -111,7 +111,9 @@
                         <span class="count">{{ tour.likedby.count }}</span>
                         <span class="heart">{% if user in tour.likedby.all %}❤️{% else %}🤍{% endif %}</span>
                     </span>
+                    <small>
                     Posted by <a href="{% url 'profile' tour.user %}">{{ tour.user }}</a>  on {{ tour.timestamp }}
+                    </small>
                 </div>
             </div>
 

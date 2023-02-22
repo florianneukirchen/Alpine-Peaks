@@ -14,7 +14,7 @@ import json
 from .models import *
 from .forms import *
 
-ITEMSPERPAGE = 5
+ITEMSPERPAGE = 20
 
 
 
@@ -329,7 +329,7 @@ def tour(request, id=None):
 
     else:
         # Show latest tours
-        tours = Tour.objects.all().order_by('-timestamp')[:20]
+        tours = Tour.objects.all().order_by('-timestamp')[:ITEMSPERPAGE]
 
         return render(request, "peaks/tourlist.html", {
             "tours": tours,

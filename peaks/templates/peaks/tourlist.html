@@ -13,21 +13,27 @@ Latest tours |
                 {% if user == tour.user %} 
                 <input type="button" class="flright btn btn-sm btn-outline-primary" value="Edit" onclick="location.href='{% url 'edittour' tour.id %}'"/>
                 {% endif %}
-                <div><a href="{% url 'showtour' tour.id %}">{{ tour.heading }}</a> </div>
+                <div class="h5"><a href="{% url 'showtour' tour.id %}">{{ tour.heading }}</a> ({{ tour.peak.name }})</div>
                 <div class="mb-1">
                     {% for tag in tour.tags.all %}
                     <a href="{% url 'tag' tag.slug %}" class="badge text-decoration-none bg-secondary">{{ tag }}</a>
                     {% endfor %}
                 </div>
                 <div>On {{ tour.date }}{% if tour.grade %}, <span data-toggle="tooltip" title="{{ tour.grade.description }}" class="grade">{{ tour.grade.name }}</span>{% endif %}</div>
-                <div>{{ tour.peak.name }} ({{ tour.peak.ele }} m) </div> 
+                <div>
+                    <small>
+                        Tour on <a href="{% url 'peak' tour.peak.slug %}">{{ tour.peak.name }}</a> ({{ tour.peak.ele }} m) in <a href="{% url 'region' tour.peak.region.slug %}">{{ tour.peak.region.name }}</a>
+                    </small>
+                </div> 
                 <div class="text-muted mt-2">
                     <span class="text-muted likes" data-id="{{ tour.id }}">
                         <!-- White heart if not liked yet by user, else red heart -->
                         <span class="count">{{ tour.likedby.count }}</span>
                         <span class="heart">{% if user in tour.likedby.all %}❤️{% else %}🤍{% endif %}</span>
                     </span>
+                    <small>
                     Posted by {{ tour.user }}  on {{ tour.timestamp }}
+                    </small>
                 </div>
             </div>
             {% endfor %}
