@@ -49,13 +49,12 @@ WaypointFormset = modelformset_factory(Waypoint, form=WaypointForm)
 
 
 class TourForm(forms.ModelForm):
-    # waypoints = WaypointFormset()
     class Meta:
         model = Tour
-        fields = ['heading', 'text', 'date', 'peak']
+        fields = ['heading', 'date', 'grade', 'text', 'tags', 'peak']
         widgets = {
             'peak': forms.HiddenInput(),
-            'date': forms.widgets.DateInput(attrs={'type': 'date'})
+            'date': forms.widgets.DateInput(attrs={'type': 'date'}),
             }
         labels = {
             'heading': 'Heading',
@@ -68,3 +67,4 @@ class TourForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
+

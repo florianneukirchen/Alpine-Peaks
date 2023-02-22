@@ -222,6 +222,9 @@ def tour(request, id=None):
             # Get instance of tour without commiting to DB
             tourpost = form.save(commit=False)
 
+            for tag in tourpost.tags.all():
+                print(tag)
+
             try:
                 # Edit tour
                 user = tourpost.user
@@ -240,6 +243,9 @@ def tour(request, id=None):
 
             # Commit new version to DB
             tourpost.save()
+            
+            # Save tags (many to many relationship)
+            form.save_m2m()
 
             # Waypoints
             if waypointformset.is_valid():
@@ -252,7 +258,6 @@ def tour(request, id=None):
                         # Ignore invalid data and empty forms
                         pass
                     else:
-                        print(lat, lon)
                         if len(oldwaypoints) > 0:
                             waypoint = oldwaypoints.pop()
                         else:

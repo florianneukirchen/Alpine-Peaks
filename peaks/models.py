@@ -101,11 +101,13 @@ class Peak(models.Model):
 class Tour(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="tours")
     peak = models.ForeignKey("Peak", on_delete=models.CASCADE, related_name="tours")
+    grade = models.ForeignKey("Grade", on_delete=models.CASCADE, related_name="tours", blank=True, null=True)
     text = models.TextField()
     date = models.DateField()
     heading = models.CharField(max_length=255)
     timestamp = models.DateTimeField(auto_now_add=True)
     likedby = models.ManyToManyField("User", related_name="liked_tours", blank=True, default="")
+    tags = models.ManyToManyField("Tag", related_name="tours", blank=True, default="")
 
     class Meta:
         ordering = ['-timestamp']
@@ -141,3 +143,20 @@ class Waypoint(models.Model):
                 "number": self.number,
             }
         }
+
+class Tag(models.Model):
+    class Meta:
+        ordering = ['name']
+
+    name = models.CharField(max_length=90, unique=True)
+    slug = models.SlugField(max_length=65, blank=True)
+
+    def __str__(self):
+        return self.name
+
+class Grade(models.Model):
+    name = models.CharField(max_length=90, unique=True)
+    description = models.CharField(max_length=500, unique=True)
+    
+    def __str__(self):
+        return f"{self.name} ({self.description})"
