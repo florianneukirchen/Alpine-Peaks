@@ -14,7 +14,7 @@ import json
 from .models import *
 from .forms import *
 
-ITEMSPERPAGE = 50
+ITEMSPERPAGE = 5
 
 
 
@@ -24,9 +24,10 @@ def index(request, slug=None):
     mapmode = "alps"
     
     # Order by
-    order = '-ele'
     if request.GET.get('order') and request.GET.get('order') in ['neargtdist', '-neargtdist', 'name', '-name', 'ele', '-ele']:
         order = request.GET.get('order')
+    else:
+        order = '-ele'
 
     # Search
     if request.GET.get('q'):
@@ -128,9 +129,21 @@ def peak(request, slug):
     except Peak.DoesNotExist:
         raise Http404("Page not found")
 
+    # Pagination
+    tours = Tour.objects.filter(peak=peak)
+    paginator = Paginator(tours, ITEMSPERPAGE)
+
+    try:
+        page_number = int(request.GET.get('page'))
+    except TypeError:
+        # GET request without ?page=int
+        page_number = 1
+
+    page_obj = paginator.get_page(page_number)
 
     return render(request, "peaks/peak.html", {
         "peak": peak,
+        "page_obj": page_obj,
     })
 
 
@@ -142,7 +155,9 @@ def profile(request, username):
 
    
     tours = Tour.objects.filter(user=user).order_by("-timestamp")
-    paginator = Paginator(tours, 20)
+
+    # Pagination
+    paginator = Paginator(tours, ITEMSPERPAGE)
 
     try:
         page_number = int(request.GET.get('page'))

@@ -29,9 +29,7 @@ class Region(models.Model):
 class Peak(models.Model):
     # ID is not auto increment, I want to use OSM IDs
     id = models.IntegerField(primary_key=True)
-
     slug = models.SlugField(max_length=80, blank=True)
-
     wiki = models.CharField(max_length=80, blank=True)
 
     name = models.CharField(max_length=80)
