@@ -97,8 +97,14 @@
                 <input type="button" class="flright btn btn-sm btn-outline-primary" value="Edit" onclick="location.href='{% url 'edittour' tour.id %}'"/>
                 {% endif %}
                 <div class="h6">
-                    <a href="{% url 'showtour' tour.id %}">{{ tour.heading }}</a> ({{ tour.date }})
+                    <a href="{% url 'showtour' tour.id %}">{{ tour.heading }}</a> 
                 </div>
+                <div class="mb-1">
+                    {% for tag in tour.tags.all %}
+                    <a href="#" class="badge text-decoration-none bg-secondary">{{ tag }}</a>
+                    {% endfor %}
+                </div>
+                <div>On {{ tour.date }}{% if tour.grade %}, <span data-toggle="tooltip" title="{{ tour.grade.description }}" class="grade">{{ tour.grade.name }}</span>{% endif %}</div>
                 <div class="text-muted mt-2">
                     <span class="text-muted likes" data-id="{{ tour.id }}">
                         <!-- White heart if not liked yet by user, else red heart -->

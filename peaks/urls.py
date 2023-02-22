@@ -18,4 +18,6 @@ urlpatterns = [
     path("edit/", views.tour, name="newtour"),
     path("waypoints/<int:id>", views.waypoints, name="waypoints"),
     path("likes/<int:id>", views.likes, name="likes"),
+    path("tag/<slug:slug>", views.tag, name="tag"),
+    path("tag/", views.tags, name="tags"),
 ]

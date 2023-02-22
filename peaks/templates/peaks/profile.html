@@ -5,11 +5,15 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Profile of {{ title }}</h1>
+    <h1>{{ title }}</h1>
 
     <div>Tours count: {{ counttours }}</div>
+    {% if hightest %}
     <div>Highest peak: {{ highest.name }} ({{ highest.ele|floatformat:0 }} m)</div>
-    <div>User {{ title }} liked {{ gavelikes }} tours and recieved {{ gotlikes }} likes.</div>
+    {% endif %}
+    {% if username %}
+    <div>{{ username }}Liked {{ gavelikes }} tours and recieved {{ gotlikes }} likes.</div>
+    {% endif %}
  
     <div class="list-group mb-2 mt-2">
         <div class="list-group-item list-group-item-dark">
@@ -21,8 +25,14 @@
             {% if user == tour.user %} 
             <input type="button" class="flright btn btn-sm btn-outline-primary" value="Edit" onclick="location.href='{% url 'edittour' tour.id %}'"/>
             {% endif %}
-            <div class="h5"><a href="{% url 'showtour' tour.id %}">{{ tour.heading }}</a> on {{ tour.date }}</div>
-            <div><a href="{% url 'peak' tour.peak.slug %}">{{ tour.peak.name }}</a> ({{ tour.peak.ele }} m) </div> 
+            <div class="h5"><a href="{% url 'showtour' tour.id %}">{{ tour.heading }}</a></div>
+            <div class="mb-1">
+                {% for tag in tour.tags.all %}
+                <a href="{% url 'tag' tag.slug %}" class="badge text-decoration-none bg-secondary">{{ tag }}</a>
+                {% endfor %}
+            </div>
+            <div>On {{ tour.date }}{% if tour.grade %}, <span data-toggle="tooltip" title="{{ tour.grade.description }}" class="grade">{{ tour.grade.name }}</span>{% endif %}</div>
+            <div class="mt-1">Peak: <a href="{% url 'peak' tour.peak.slug %}">{{ tour.peak.name }}</a> ({{ tour.peak.ele }} m) </div> 
             <div class="text-muted mt-2">
                 <span class="text-muted likes" data-id="{{ tour.id }}">
                     <!-- White heart if not liked yet by user, else red heart -->
@@ -32,7 +42,8 @@
                 Posted by {{ tour.user }}  on {{ tour.timestamp }}
             </div>
         </div>
-
+        {% empty %}
+        <div class="list-group-item">No tours ...</div>
         {% endfor %}
 
     </div>

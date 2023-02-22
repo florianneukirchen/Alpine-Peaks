@@ -1,0 +1,19 @@
+{% extends "peaks/layout.html" %}
+
+{% block title %}
+{{ title }} |
+{% endblock %}
+
+{% block body %}
+    <h1>Tags</h1>
+
+    <div class="list-group mb-2">
+    {% for tag in tags %}
+        <div class="list-group-item">
+            <a href="{% url 'tag' tag.slug %}">{{ tag.name }}</a> 
+        </div>
+    {% endfor %}
+    </div>
+
+
+{% endblock %}

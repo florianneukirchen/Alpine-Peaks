@@ -19,7 +19,7 @@
             <div class="list-group-item">
                 <div class="mb-1">
                     {% for tag in tour.tags.all %}
-                    <a href="#" class="badge text-decoration-none bg-secondary">{{ tag }}</a>
+                    <a href="{% url 'tag' tag.slug %}" class="badge text-decoration-none bg-secondary">{{ tag }}</a>
                     {% endfor %}
                 </div>
                 {% if tour.grade %}<div>Grade: <span data-toggle="tooltip" title="{{ tour.grade.description }}" class="grade">{{ tour.grade.name }}</span></div>{% endif %}

@@ -173,7 +173,7 @@ def profile(request, username):
 
     return render(request, "peaks/profile.html", {
             "page_obj": page_obj,
-            "title": username,
+            "title": f"Profile of {username}",
             "username": username,
             "counttours": tours.count(),
             "highest": highest,
@@ -243,7 +243,7 @@ def tour(request, id=None):
 
             # Commit new version to DB
             tourpost.save()
-            
+
             # Save tags (many to many relationship)
             form.save_m2m()
 
@@ -375,6 +375,42 @@ def likes(request, id):
         "liked": (request.user in tour.likedby.all()),
         "count": tour.likes,
     }, status=200)
+
+def tag(request, slug):
+    try:
+        tag = Tag.objects.get(slug=slug)
+    except Tag.DoesNotExist:
+        raise Http404("Page not found")
+    
+    tours = Tour.objects.filter(tags=tag).order_by("-timestamp")
+    highest = Peak.objects.filter(tours__tags=tag).order_by('-ele').first
+    print(highest)
+
+    # Pagination
+    paginator = Paginator(tours, ITEMSPERPAGE)
+
+    try:
+        page_number = int(request.GET.get('page'))
+    except TypeError:
+        # GET request without ?page=int
+        page_number = 1
+
+    page_obj = paginator.get_page(page_number)
+
+
+    return render(request, "peaks/profile.html", {
+            "page_obj": page_obj,
+            "title": f"Tag {tag.name}",
+            "counttours": tours.count(),
+            "highest": highest,
+        })
+
+def tags(request):
+    tags = Tag.objects.all().order_by("name")
+
+    return render(request, "peaks/tags.html", {
+        "tags": tags,
+    })
 
 
 def login_view(request):
