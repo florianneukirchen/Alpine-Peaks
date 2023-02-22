@@ -17,82 +17,91 @@ from .forms import *
 ITEMSPERPAGE = 20
 
 
-
 def index(request, slug=None):
     # Default lat lon for map
     lat, lon = 45.5, 9.9
     mapmode = "alps"
-    
+
     # Order by
-    if request.GET.get('order') and request.GET.get('order') in ['neargtdist', '-neargtdist', 'name', '-name', 'ele', '-ele']:
-        order = request.GET.get('order')
+    if request.GET.get("order") and request.GET.get("order") in [
+        "neargtdist",
+        "-neargtdist",
+        "name",
+        "-name",
+        "ele",
+        "-ele",
+    ]:
+        order = request.GET.get("order")
     else:
-        order = '-ele'
+        order = "-ele"
 
     # Search
-    if request.GET.get('q'):
-        query = request.GET.get('q')
-        # Chain queries with "or" 
-        # case insensitive contains: __icontains 
+    if request.GET.get("q"):
+        query = request.GET.get("q")
+        # Chain queries with "or"
+        # case insensitive contains: __icontains
         allpeaks = (
-            Peak.objects.filter(name__icontains=query) |
-            Peak.objects.filter(alias__icontains=query) |
-            Peak.objects.filter(name_en__icontains=query) |
-            Peak.objects.filter(name_de__icontains=query) |
-            Peak.objects.filter(name_fr__icontains=query) |
-            Peak.objects.filter(name_it__icontains=query) |
-            Peak.objects.filter(name_sl__icontains=query) |
-            Peak.objects.filter(name_ch__icontains=query) |
-            Peak.objects.filter(name_de_AT__icontains=query) |
-            Peak.objects.filter(name_de_DE__icontains=query) |
-            Peak.objects.filter(alt_name__icontains=query) |
-            Peak.objects.filter(region__name__icontains=query)
-            ).order_by(order)
+            Peak.objects.filter(name__icontains=query)
+            | Peak.objects.filter(alias__icontains=query)
+            | Peak.objects.filter(name_en__icontains=query)
+            | Peak.objects.filter(name_de__icontains=query)
+            | Peak.objects.filter(name_fr__icontains=query)
+            | Peak.objects.filter(name_it__icontains=query)
+            | Peak.objects.filter(name_sl__icontains=query)
+            | Peak.objects.filter(name_ch__icontains=query)
+            | Peak.objects.filter(name_de_AT__icontains=query)
+            | Peak.objects.filter(name_de_DE__icontains=query)
+            | Peak.objects.filter(alt_name__icontains=query)
+            | Peak.objects.filter(region__name__icontains=query)
+        ).order_by(order)
         title = f"Search: {query}"
-    
+
     # Region / Country
     elif slug:
         if Region.objects.filter(slug=slug).exists():
             region = Region.objects.get(slug=slug)
-            allpeaks = Peak.objects.filter(region=region).order_by(order)   
+            allpeaks = Peak.objects.filter(region=region).order_by(order)
             title = f"Peaks of {region.name}"
-            # Get lat lon of highest peak 
-            highest = Peak.objects.filter(region=region).order_by('-ele').first()
+            # Get lat lon of highest peak
+            highest = Peak.objects.filter(region=region).order_by("-ele").first()
             lat = highest.lat
             lon = highest.lon
             mapmode = "region"
 
         elif Country.objects.filter(slug=slug).exists():
             country = Country.objects.get(slug=slug)
-            allpeaks = Peak.objects.filter(countries=country).order_by(order) 
+            allpeaks = Peak.objects.filter(countries=country).order_by(order)
             title = f"Peaks of {country.name}"
-        
 
     # Index (all peaks)
     else:
-        allpeaks = Peak.objects.all().order_by(order)   
+        allpeaks = Peak.objects.all().order_by(order)
         title = "Peaks of the Alps"
 
-    # Pagination    
+    # Pagination
     paginator = Paginator(allpeaks, ITEMSPERPAGE)
-    
+
     try:
-        page_number = int(request.GET.get('page'))
+        page_number = int(request.GET.get("page"))
     except TypeError:
         # GET request without ?page=int
         page_number = 1
-    
+
     page_obj = paginator.get_page(page_number)
-    
-    return render(request, "peaks/index.html", {
-        "page_obj": page_obj,
-        "title": title,
-        "selectorder" : OrderSelect(initial={'order': order}),
-        "lat": lat,
-        "lon": lon,
-        "regionslug": slug,
-        "mapmode": mapmode
-        })
+
+    return render(
+        request,
+        "peaks/index.html",
+        {
+            "page_obj": page_obj,
+            "title": title,
+            "selectorder": OrderSelect(initial={"order": order}),
+            "lat": lat,
+            "lon": lon,
+            "regionslug": slug,
+            "mapmode": mapmode,
+        },
+    )
 
 
 @cache_page(None)
@@ -107,8 +116,10 @@ def jsonapi(request, slug=None):
         # Use subquery to get n peaks with greatest neargtdist per region
         # Note: this is slow and should be cached
         n = 3
-        top_peaks = Peak.objects.filter(region=OuterRef('region')).order_by('-neargtdist')[:n]
-        allpeaks = Peak.objects.filter(id__in=Subquery(top_peaks.values('id')))
+        top_peaks = Peak.objects.filter(region=OuterRef("region")).order_by(
+            "-neargtdist"
+        )[:n]
+        allpeaks = Peak.objects.filter(id__in=Subquery(top_peaks.values("id")))
 
     return JsonResponse([peak.geojson() for peak in allpeaks], safe=False)
 
@@ -117,10 +128,14 @@ def regionlist(request):
     regions = Region.objects.all().order_by("name")
     countries = Country.objects.all().order_by("name")
 
-    return render(request, "peaks/regions.html", {
-        "regions": regions,
-        "countries": countries,
-    })
+    return render(
+        request,
+        "peaks/regions.html",
+        {
+            "regions": regions,
+            "countries": countries,
+        },
+    )
 
 
 def peak(request, slug):
@@ -134,17 +149,21 @@ def peak(request, slug):
     paginator = Paginator(tours, ITEMSPERPAGE)
 
     try:
-        page_number = int(request.GET.get('page'))
+        page_number = int(request.GET.get("page"))
     except TypeError:
         # GET request without ?page=int
         page_number = 1
 
     page_obj = paginator.get_page(page_number)
 
-    return render(request, "peaks/peak.html", {
-        "peak": peak,
-        "page_obj": page_obj,
-    })
+    return render(
+        request,
+        "peaks/peak.html",
+        {
+            "peak": peak,
+            "page_obj": page_obj,
+        },
+    )
 
 
 def profile(request, username):
@@ -153,25 +172,27 @@ def profile(request, username):
     except User.DoesNotExist:
         raise Http404("User does not exist")
 
-   
     tours = Tour.objects.filter(user=user).order_by("-timestamp")
 
     # Pagination
     paginator = Paginator(tours, ITEMSPERPAGE)
 
     try:
-        page_number = int(request.GET.get('page'))
+        page_number = int(request.GET.get("page"))
     except TypeError:
         # GET request without ?page=int
         page_number = 1
 
     page_obj = paginator.get_page(page_number)
 
-    highest = Peak.objects.filter(tours__user=user).order_by('-ele').first
+    highest = Peak.objects.filter(tours__user=user).order_by("-ele").first
     gotlikes = user.likes
     gavelikes = Tour.objects.filter(likedby=user).count()
 
-    return render(request, "peaks/profile.html", {
+    return render(
+        request,
+        "peaks/profile.html",
+        {
             "page_obj": page_obj,
             "title": f"Profile of {username}",
             "username": username,
@@ -179,7 +200,8 @@ def profile(request, username):
             "highest": highest,
             "gotlikes": gotlikes,
             "gavelikes": gavelikes,
-        })
+        },
+    )
 
 
 @login_required
@@ -198,16 +220,15 @@ def tour(request, id=None):
                 count, _ = tour.delete()
                 print(f"Deleted {count} records (tours/waypoints)")
                 if count >= 1:
-                    return HttpResponse('Tour has been deleted', status=200)
+                    return HttpResponse("Tour has been deleted", status=200)
                 else:
                     # Not succesfull (request not valid)
-                    return HttpResponse('Could not delete tour', status=404)
+                    return HttpResponse("Could not delete tour", status=404)
             else:
                 print("Delete forbidden")
                 # Forbidden
-                return HttpResponse('Forbidden', status=403)
+                return HttpResponse("Forbidden", status=403)
 
-        
     # POST (edit or new tour)
     if request.method == "POST":
         if id:
@@ -217,7 +238,7 @@ def tour(request, id=None):
             # New
             form = TourForm(request.POST)
         waypointformset = WaypointFormset(request.POST)
-        
+
         if form.is_valid():
             # Get instance of tour without commiting to DB
             tourpost = form.save(commit=False)
@@ -228,7 +249,7 @@ def tour(request, id=None):
             try:
                 # Edit tour
                 user = tourpost.user
-                
+
             except Tour.user.RelatedObjectDoesNotExist:
                 # New tour
                 oldwaypoints = []
@@ -238,7 +259,7 @@ def tour(request, id=None):
                 if tour.user != request.user or user != request.user:
                     return HttpResponse(status=400)
                 oldwaypoints = list(tour.waypoints.all())
-            
+
             tourpost.user = request.user
 
             # Commit new version to DB
@@ -251,9 +272,9 @@ def tour(request, id=None):
             if waypointformset.is_valid():
                 for wp in waypointformset.cleaned_data:
                     try:
-                        lat = float(wp['lat'])
-                        lon = float(wp['lon'])
-                        number = int(wp['number'])
+                        lat = float(wp["lat"])
+                        lon = float(wp["lon"])
+                        number = int(wp["number"])
                     except (ValueError, TypeError, KeyError):
                         # Ignore invalid data and empty forms
                         pass
@@ -265,7 +286,7 @@ def tour(request, id=None):
                         waypoint.number = number
                         waypoint.lat = lat
                         waypoint.lon = lon
-                        waypoint.name = wp['name']
+                        waypoint.name = wp["name"]
                         waypoint.tour = tourpost
                         waypoint.save()
 
@@ -274,7 +295,7 @@ def tour(request, id=None):
                 wp.delete()
 
             # Redirect to the site of the tour
-            return HttpResponseRedirect(reverse("showtour", kwargs={'id': tourpost.id}))
+            return HttpResponseRedirect(reverse("showtour", kwargs={"id": tourpost.id}))
         else:
             print(form.errors)
             return HttpResponse("Invalid form", status=400)
@@ -287,7 +308,7 @@ def tour(request, id=None):
         # Dont allow users to like their own tours
         if request.user == tour.user:
             return HttpResponse(status=403)
-        
+
         # Toggle like
         if request.user in tour.likedby.all():
             tour.likedby.remove(request.user)
@@ -295,46 +316,58 @@ def tour(request, id=None):
             tour.likedby.add(request.user)
 
         tour.save()
-        return HttpResponse(status=200) 
-
+        return HttpResponse(status=200)
 
     # GET
-    if request.GET.get('new'):
+    if request.GET.get("new"):
         # New tour
-        peakid = request.GET.get('new')
+        peakid = request.GET.get("new")
         try:
             peak = Peak.objects.get(id=peakid)
         except Peak.DoesNotExist:
             raise Http404("Page not found")
-        return render(request, "peaks/tour.html",{
-            "tourform": TourForm(initial={'peak': peakid}),
-            "wpformset": WaypointFormset(queryset=Waypoint.objects.none()),
-            "title": f"New tour on {peak.name}",
-            "peak": peak,
-        })
+        return render(
+            request,
+            "peaks/tour.html",
+            {
+                "tourform": TourForm(initial={"peak": peakid}),
+                "wpformset": WaypointFormset(queryset=Waypoint.objects.none()),
+                "title": f"New tour on {peak.name}",
+                "peak": peak,
+            },
+        )
 
     elif id:
         # Edit mode
-                
+
         if tour.user != request.user:
             return HttpResponse(status=400)
 
-        return render(request, "peaks/tour.html",{
-             "tourform": TourForm(instance=tour),
-             "wpformset": WaypointFormset(queryset=Waypoint.objects.filter(tour=tour)),
-             "title": f"Edit tour on {tour.peak.name}",
-             "peak": tour.peak,
-             "tourid": tour.id,
-        })
+        return render(
+            request,
+            "peaks/tour.html",
+            {
+                "tourform": TourForm(instance=tour),
+                "wpformset": WaypointFormset(
+                    queryset=Waypoint.objects.filter(tour=tour)
+                ),
+                "title": f"Edit tour on {tour.peak.name}",
+                "peak": tour.peak,
+                "tourid": tour.id,
+            },
+        )
 
     else:
         # Show latest tours
-        tours = Tour.objects.all().order_by('-timestamp')[:ITEMSPERPAGE]
+        tours = Tour.objects.all().order_by("-timestamp")[:ITEMSPERPAGE]
 
-        return render(request, "peaks/tourlist.html", {
-            "tours": tours,
-        })
-          
+        return render(
+            request,
+            "peaks/tourlist.html",
+            {
+                "tours": tours,
+            },
+        )
 
 
 def showtour(request, id=None):
@@ -343,16 +376,19 @@ def showtour(request, id=None):
             tour = Tour.objects.get(id=id)
         except Tour.DoesNotExist:
             raise Http404("Page not found")
-        return render(request, "peaks/showtour.html", {
-            "tour": tour
-        })
+        return render(request, "peaks/showtour.html", {"tour": tour})
     else:
         # Show latest tours
-        tours = Tour.objects.all().order_by('-timestamp')[:20]
+        tours = Tour.objects.all().order_by("-timestamp")[:20]
 
-        return render(request, "peaks/tourlist.html", {
-            "tours": tours,
-        })
+        return render(
+            request,
+            "peaks/tourlist.html",
+            {
+                "tours": tours,
+            },
+        )
+
 
 def waypoints(request, id):
     """Return waypoints als GeoJSON"""
@@ -364,6 +400,7 @@ def waypoints(request, id):
 
     return JsonResponse([wp.geojson() for wp in waypoints], safe=False)
 
+
 def likes(request, id):
     try:
         tour = Tour.objects.get(id=id)
@@ -371,51 +408,62 @@ def likes(request, id):
         raise Http404("Page not found")
 
     # Return likes
-    return JsonResponse({
-        "liked": (request.user in tour.likedby.all()),
-        "count": tour.likes,
-    }, status=200)
+    return JsonResponse(
+        {
+            "liked": (request.user in tour.likedby.all()),
+            "count": tour.likes,
+        },
+        status=200,
+    )
+
 
 def tag(request, slug):
     try:
         tag = Tag.objects.get(slug=slug)
     except Tag.DoesNotExist:
         raise Http404("Page not found")
-    
+
     tours = Tour.objects.filter(tags=tag).order_by("-timestamp")
-    highest = Peak.objects.filter(tours__tags=tag).order_by('-ele').first
+    highest = Peak.objects.filter(tours__tags=tag).order_by("-ele").first
     print(highest)
 
     # Pagination
     paginator = Paginator(tours, ITEMSPERPAGE)
 
     try:
-        page_number = int(request.GET.get('page'))
+        page_number = int(request.GET.get("page"))
     except TypeError:
         # GET request without ?page=int
         page_number = 1
 
     page_obj = paginator.get_page(page_number)
 
-
-    return render(request, "peaks/profile.html", {
+    return render(
+        request,
+        "peaks/profile.html",
+        {
             "page_obj": page_obj,
             "title": f"Tag {tag.name}",
             "counttours": tours.count(),
             "highest": highest,
-        })
+        },
+    )
+
 
 def tags(request):
     tags = Tag.objects.all().order_by("name")
 
-    return render(request, "peaks/tags.html", {
-        "tags": tags,
-    })
+    return render(
+        request,
+        "peaks/tags.html",
+        {
+            "tags": tags,
+        },
+    )
 
 
 def login_view(request):
     if request.method == "POST":
-
         # Attempt to sign user in
         username = request.POST["username"]
         password = request.POST["password"]
@@ -426,9 +474,11 @@ def login_view(request):
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
         else:
-            return render(request, "peaks/login.html", {
-                "message": "Invalid username and/or password."
-            })
+            return render(
+                request,
+                "peaks/login.html",
+                {"message": "Invalid username and/or password."},
+            )
     else:
         return render(request, "peaks/login.html")
 
@@ -447,18 +497,18 @@ def register(request):
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
         if password != confirmation:
-            return render(request, "network/register.html", {
-                "message": "Passwords must match."
-            })
+            return render(
+                request, "network/register.html", {"message": "Passwords must match."}
+            )
 
         # Attempt to create new user
         try:
             user = User.objects.create_user(username, email, password)
             user.save()
         except IntegrityError:
-            return render(request, "peaks/register.html", {
-                "message": "Username already taken."
-            })
+            return render(
+                request, "peaks/register.html", {"message": "Username already taken."}
+            )
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
