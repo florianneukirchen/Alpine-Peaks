@@ -359,15 +359,7 @@ def tour(request, id=None):
 
     else:
         # Show latest tours
-        tours = Tour.objects.all().order_by("-timestamp")[:ITEMSPERPAGE]
-
-        return render(
-            request,
-            "peaks/tourlist.html",
-            {
-                "tours": tours,
-            },
-        )
+        return HttpResponseRedirect(reverse("tourlist"))
 
 
 def showtour(request, id=None):
@@ -379,7 +371,7 @@ def showtour(request, id=None):
         return render(request, "peaks/showtour.html", {"tour": tour})
     else:
         # Show latest tours
-        tours = Tour.objects.all().order_by("-timestamp")[:20]
+        tours = Tour.objects.all().order_by("-timestamp")[:ITEMSPERPAGE]
 
         return render(
             request,
