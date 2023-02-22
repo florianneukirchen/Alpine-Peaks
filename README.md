@@ -4,7 +4,7 @@ Alpine Peaks is a web app about the peaks of the Alps, using python, [django](ht
 
 The app shows information about all peaks of the Alps that are higher than 1000 m, including a map and an image and extract from Wikipedia. Users can add their tours with description, grade, tags and waypoints.
 
-![]()
+![Alpine Peaks](https://raw.githubusercontent.com/florianneukirchen/Alpine-Peaks/main/docs/peaks-waypoints.gif)
 
 ## Distinctiveness and Complexity
 - Django:
@@ -25,6 +25,7 @@ The app shows information about all peaks of the Alps that are higher than 1000 
 - Data:
     - I used python and [geopandas](https://geopandas.org/en/stable/) to clean and enrich the raw data originally downloaded from OpenStreetMap.
 
+![Alpine Peaks Screenshot](https://raw.githubusercontent.com/florianneukirchen/Alpine-Peaks/main/docs/mb.png)
 
 ## Requirements
 - django (tested with django 4.1.5)
