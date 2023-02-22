@@ -168,6 +168,8 @@ def profile(request, username):
     page_obj = paginator.get_page(page_number)
 
     highest = Peak.objects.filter(tours__user=user).order_by('-ele').first
+    gotlikes = user.likes
+    gavelikes = Tour.objects.filter(likedby=user).count()
 
     return render(request, "peaks/profile.html", {
             "page_obj": page_obj,
@@ -175,6 +177,8 @@ def profile(request, username):
             "username": username,
             "counttours": tours.count(),
             "highest": highest,
+            "gotlikes": gotlikes,
+            "gavelikes": gavelikes,
         })
 
 

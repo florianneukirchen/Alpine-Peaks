@@ -5,10 +5,11 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ title }}</h1>
+    <h1>Profile of {{ title }}</h1>
 
     <div>Tours count: {{ counttours }}</div>
     <div>Highest peak: {{ highest.name }} ({{ highest.ele|floatformat:0 }} m)</div>
+    <div>User {{ title }} liked {{ gavelikes }} tours and recieved {{ gotlikes }} likes.</div>
  
     <div class="list-group mb-2 mt-2">
         <div class="list-group-item list-group-item-dark">

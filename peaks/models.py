@@ -2,7 +2,13 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 class User(AbstractUser):
-    pass
+    @property
+    def likes(self):
+        likes = 0
+        tours = self.tours.all()
+        for tour in tours:
+            likes = likes + tour.likes
+        return likes
 
 
 class Country(models.Model):
