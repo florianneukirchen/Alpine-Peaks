@@ -138,7 +138,7 @@ The view functions used by the app. The most important views are:
     - Show user profile
     - List tours using pagination
 - jsonapi()
-    - Returns peaks as JSON features
+    - Returns peaks as GeoJSON features
     - Used with AJAX to plot peaks on the map
     - With slug: all peaks of a region
     - Without slug: The 3 most dominant peaks of each region (the algorithm uses a subquery and is very slow)
